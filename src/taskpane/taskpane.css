@@ -85,3 +85,9 @@ b {
   gap: 8px;
   margin-bottom: 8px;
 }
+
+.meta-a_button {
+  size-adjust: auto;
+  width: 100%;
+  height: 40px;
+}

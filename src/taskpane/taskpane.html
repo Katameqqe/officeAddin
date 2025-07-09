@@ -2,13 +2,13 @@
 <!-- This file shows how to design a first-run page that provides a welcome screen to the user about the features of the add-in. -->
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Contoso Task Pane Add-in</title>
+    <title>MetaAdder Task Pane Add-in</title>
 
     <!-- Office JavaScript API -->
     <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
@@ -21,23 +21,18 @@
 </head>
 
 <body class="ms-font-m ms-welcome ms-Fabric">
-    <main id="app-body" class="ms-welcome__main" style="display: none;">
-        <div role="button" id="run" class="ms-welcome__action ms-Button ms-Button--hero ms-font-xl">
-            <span class="ms-Button-label">Show Custom Prop</span>
-        </div>
-        <div class="input-row">
-            <input type="text" id="custom-prop-value" placeholder="Property Value">
-            <div role="button" id="add-prop" class="ms-welcome__action ms-Button ms-Button--other ms-font-xl">
-                <span class="ms-Button-label">Add Property</span>
+    <main id="app-body" class="ms-welcome__main">
+        <div class="edit-properties">
+            <button id="run">Show Custom Prop</button>
+            <div class="input-row">
+                <input type="text" id="custom-prop-value" placeholder="Property Value">
+                <button id="add-prop">Add Property</button>
+            </div>
+            <div class="input-row">
+                <input type="text" id="remove-prop-value" placeholder="Property Value">
+                <button id="remove-prop">Remove Property</button>
             </div>
         </div>
-        <div class="input-row">
-            <input type="text" id="remove-prop-value" placeholder="Property Value">
-            <div role="button" id="remove-prop" class="ms-welcome__action ms-Button ms-Button--other ms-font-xl">
-                <span class="ms-Button-label">Remove Property</span>
-            </div>
-        </div>
-
         <p><label id="item-subject"></label></p>
     </main>
 </body>
