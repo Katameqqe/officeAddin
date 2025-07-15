@@ -4,6 +4,7 @@
  */
 
 /* global document, Office, Word */
+import { initCustomProp } from "./customProp";
 
 const MetaPrefix = "Classification";
 let ListSuffix = ["Document", "Default", "Restricted","Protected"];
@@ -17,17 +18,18 @@ function recolorButtons(activeButtonId, color = "#00FF00", defaultColor = "#0000
 }
 Office.onReady(async (info) => {
   window.INFO = info;
+  initCustomProp();
   if (info.host === Office.HostType.Word || info.host === Office.HostType.Excel || (info.host === Office.HostType.PowerPoint && Office.context.requirements.isSetSupported("PowerPointApi", "1.7"))) {
     const res = await fetch('https://192.168.128.4:8000/list');
     const resJson = await res.json();
     ListSuffix = await resJson.names;
-    console.log(JSON.stringify(ListSuffix));
+    console.log(JSON.stringify(ListSuffix,null,2));
     if(!ListSuffix.includes("NoLabel")){
       ListSuffix.push("NoLabel");
     }
 
     document.getElementById("app-body").style.display = "flex";
-    document.getElementById("run").onclick = runWorkbook;
+    document.getElementById("run").onclick = runDocument;
 
     for (const suffix of ListSuffix) {
       const newButton = document.createElement("button");
@@ -36,7 +38,7 @@ Office.onReady(async (info) => {
       newButton.textContent = suffix;
       newButton.onclick = () => {
         recolorButtons(newButton.id);
-        addCustomProperty(MetaPrefix, suffix, newButton.id);
+        addCustomProperty(MetaPrefix, suffix);
       };
       document.getElementById("app-body").appendChild(newButton);
     }
@@ -76,139 +78,7 @@ Office.onReady(async (info) => {
   }
 });
 
-export async function removeCustomProperty(name) {
-  if (window.INFO.host === Office.HostType.Word) {
-  return Word.run(async (context) => {
-    const customProps = context.document.properties.customProperties;
-    customProps.load("items");
-    await context.sync();
 
-    const propToRemove = customProps.items.find(prop => prop.key === name);
-    if (propToRemove) {
-      propToRemove.delete();
-      await context.sync();
-      console.log(`Custom property "${name}" removed.`);
-    } else {
-      console.log(`Custom property "${name}" not found.`);
-    }
-  });
-  } else if (window.INFO.host === Office.HostType.Excel) {
-    return Excel.run(async (context) => {
-      const customProps = context.workbook.properties.custom;
-      customProps.load("items");
-      await context.sync();
-
-      const propToRemove = customProps.items.find(prop => prop.key === name);
-      if (propToRemove) {
-        propToRemove.delete();
-        await context.sync();
-        console.log(`Custom property "${name}" removed.`);
-      } else {
-        console.log(`Custom property "${name}" not found.`);
-      }
-    });
-  } else if (window.INFO.host === Office.HostType.PowerPoint) {
-    return PowerPoint.run(async (context) => {
-      const customProps = context.presentation.properties.customProperties;
-      customProps.load("items");
-      await context.sync();
-
-      const propToRemove = customProps.items.find(prop => prop.key === name);
-      if (propToRemove) {
-        propToRemove.delete();
-        await context.sync();
-        console.log(`Custom property "${name}" removed.`);
-      } else {
-        console.log(`Custom property "${name}" not found.`);
-      }
-    });
-  }
-}
-
-export async function readCustomProperty(name) {
-  if (window.INFO.host === Office.HostType.Word) {
-  return Word.run(async (context) => {
-    const customProps = context.document.properties.customProperties;
-    customProps.load("items");
-    await context.sync();
-
-    const exists = customProps.items.find(prop => prop.key === name);
-    if (exists) {
-      console.log(`Custom property "${name}" updated with value: ${JSON.stringify(exists.value)}`);
-      return exists.value;
-    } else {
-      console.log(`Custom property "${name}" not found.`);
-      return null;
-    }
-  });
-  } else if (window.INFO.host === Office.HostType.Excel) {
-    return Excel.run(async (context) => {
-      const customProps = context.workbook.properties.custom;
-      customProps.load("items");
-      await context.sync();
-      console.log(JSON.stringify(customProps.items));
-
-      const exists = customProps.items.find(prop => prop.key === name);
-      if (exists) {
-        console.log(`Custom property "${name}" updated with value: ${JSON.stringify(exists.value)}`);
-        return exists.value;
-      } else {
-        console.log(`Custom property "${name}" not found.`);
-        return null;
-      }
-    });
-  } else if (window.INFO.host === Office.HostType.PowerPoint) {
-    return PowerPoint.run(async (context) => {
-      const customProps = context.presentation.properties.customProperties;
-      customProps.load("items");
-      await context.sync();
-      console.log(JSON.stringify(customProps, null, 2));
-
-      const exists = customProps.items.find(prop => prop.key === name);
-      if (exists) {
-        console.log(`Custom property "${name}" updated with value: ${JSON.stringify(exists.value)}`);
-        return exists.value;
-      } else {
-        console.log(`Custom property "${name}" not found.`);
-        return null;
-      }
-    });
-  }
-}
-
-export async function addCustomProperty(name, value) {
-  if (window.INFO.host === Office.HostType.Word) {
-    return Word.run(async (context) => {
-      const customProps = context.document.properties.customProperties;
-      customProps.load("items");
-      await context.sync();
-
-      customProps.add(name, value);
-      await context.sync();
-      console.log(`Custom property "${name}" added with value: ${value}`);
-    });
-  } else if (window.INFO.host === Office.HostType.Excel) {
-    return Excel.run(async (context) => {
-      const customProps = context.workbook.properties.custom;
-      customProps.load("items");
-      await context.sync();
-
-      customProps.add(name, value);
-      await context.sync();
-      console.log(`Custom property "${name}" added with value: ${value}`);
-    });
-  } else if (window.INFO.host === Office.HostType.PowerPoint) {
-    return PowerPoint.run(async (context) => {
-      const customProps = context.presentation.properties.customProperties;
-      customProps.load("value, key");
-      await context.sync();
-
-      customProps.add(name, value);
-      await context.sync();
-      console.log(`Custom property "${name}" added with value: ${value}`);
-    });
-  }
-}
 
 export async function runDocument() {
   return Word.run(async (context) => {
