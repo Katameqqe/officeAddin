@@ -7,40 +7,20 @@
 import { initCustomProp } from "./customProp";
 
 const MetaPrefix = "Classification";
-let ListSuffix = ["Document", "Default", "Restricted","Protected"];
-ListSuffix.push("NoLabel");
-
-function recolorButtons(activeButtonId, color = "meta-button-active") {
-  const buttons = document.querySelectorAll(".pref-button");
-  buttons.forEach(btn => {
-    if (btn.id === activeButtonId) {
-      btn.classList.add(color);
-    } else {
-      btn.classList.remove(color);
-    }
-  });
-}
-
-function createButton(suffix = "") {
-  const button = document.createElement("button");
-  button.id = suffix;
-  button.className = "pref-button meta-button";
-  button.textContent = suffix;
-  button.onclick = () => {
-        recolorButtons(button.id);
-        addCustomProperty(MetaPrefix, suffix);
-      };
-  return button;
-}
+const address = "https://192.168.128.4:443/list"
 
 Office.onReady(async (info) => {
   window.INFO = info;
   initCustomProp();
   if (info.host === Office.HostType.Word || info.host === Office.HostType.Excel || (info.host === Office.HostType.PowerPoint && Office.context.requirements.isSetSupported("PowerPointApi", "1.7"))) {
     
-    const res = await fetch('https://192.168.128.4:8000/list');
-    const resJson = await res.json();
-    ListSuffix = await resJson.names;
+    const ListSuffix = await fetch(address)
+      .then(res => res.json())
+      .then(resJson => resJson.names)
+      .catch(err => {
+        console.error("Error fetching suffix list:", err);
+        return ["Document", "Default", "Restricted", "Protected", "NoLabel"];
+      });
     
     console.log(JSON.stringify(ListSuffix,null,2));
     
@@ -64,17 +44,21 @@ Office.onReady(async (info) => {
     var prefixValue = await readCustomProperty(MetaPrefix);
 
     console.log(`Read custom property "${MetaPrefix}": ${prefixValue}`);
-    if (ListSuffix.includes(prefixValue)) { // If the custom property value is in the list
+    // If the custom property value is in the list
+    if (ListSuffix.includes(prefixValue)) { 
       console.log(`Custom property "${MetaPrefix}" exists with value: ${prefixValue}`);
       document.getElementById(prefixValue).classList.add("meta-button-active");
     } 
-    else if (prefixValue === null || prefixValue === "") { // If the custom property does not exist or is empty
+    // If the custom property does not exist or is empty
+    else if (prefixValue === null || prefixValue === "") { 
       console.log(`Custom property "${MetaPrefix}" exists with value: "NoLabel"`);
       document.getElementById("NoLabel").classList.add("meta-button-active");
     } 
-    else { // If the custom property exists but is not in the list
+    // If the custom property exists but is not in the list
+    else { 
       console.log(`Custom property "${MetaPrefix}" exists with value: ${prefixValue}`);
-      newButton = createButton(prefixValue)
+      const newButton = createButton(prefixValue)
+      newButton.classList.add("meta-button-active");
       document.getElementById("app-body").insertBefore(newButton, document.getElementById("NoLabel"));
     };
     /*
@@ -90,6 +74,28 @@ Office.onReady(async (info) => {
   }
 });
 
+function recolorButtons(activeButtonId, color = "meta-button-active") {
+  const buttons = document.querySelectorAll(".pref-button");
+  buttons.forEach(btn => {
+    if (btn.id === activeButtonId) {
+      btn.classList.add(color);
+    } else {
+      btn.classList.remove(color);
+    }
+  });
+}
+
+function createButton(suffix = "") {
+  const button = document.createElement("button");
+  button.id = suffix;
+  button.className = "pref-button meta-button";
+  button.textContent = suffix;
+  button.onclick = () => {
+        recolorButtons(button.id);
+        addCustomProperty(MetaPrefix, suffix);
+      };
+  return button;
+}
 
 /*
 export async function runDocument() {

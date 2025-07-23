@@ -117,7 +117,7 @@ export function initCustomProp() {
       await excelCustomProp.removeCustomProperty(value);
     };
   } else if (window.INFO.host === Office.HostType.PowerPoint) {
-    // Similar implementation for PowerPoint
+    //PowerPoint implementation 
   } else {
     console.error("Unsupported host application.");
   }

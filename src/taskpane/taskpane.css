@@ -145,9 +145,10 @@ b {
   transform: translateY(-2px);
 }
 .meta-button-active:hover {
-  color: #1f9aff;
-  background-color: #fff;
-  border: 3px solid #1f9aff;
+  color: rgb(255, 255, 255);
+  background-color: #59c2ff;
+  /*border: 3px solid #1f9aff;*/
+  border: 0px;
   box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
   transform: translateY(0px);
 }
