@@ -1,4 +1,4 @@
-
+// TODO: this file should be divided to separate files. One class - one file 
 class WordCustomProp
 {
     async addCustomProperty(name, value)
@@ -129,6 +129,7 @@ function initCustomProp()
     if (window.INFO.host === Office.HostType.Word)
     {
         const wordCustomProp = new WordCustomProp();
+        
         window.addCustomProperty =
             async (name, value) =>
             {
