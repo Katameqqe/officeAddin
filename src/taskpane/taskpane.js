@@ -1,8 +1,8 @@
 
 const MetaPrefix = "Classification";
 const address = "https://192.168.128.4:443/list"
+let propertyController = null;
 
-// TODO: Such a long function is a bad coding style. The code should be divided to separate functions and classes.
 Office.onReady(
     async (info) =>
     {
@@ -10,10 +10,10 @@ Office.onReady(
         init(info);
     });
 
+// TODO: Such a long function is a bad coding style. The code should be divided to separate functions and classes.
 async function init(info)
 {
-    window.INFO = info;
-    initCustomProp();
+    propertyController = new CustomPropertyController(info.host);
 
     if (info.host === Office.HostType.Word ||
         info.host === Office.HostType.Excel ||
@@ -49,10 +49,10 @@ async function init(info)
         () =>
         {
             recolorButtons("NoLabel");
-            addCustomProperty(MetaPrefix, "", "NoLabel");
+            propertyController.addCustomProperty(MetaPrefix, "", "NoLabel");
         };
 
-        var prefixValue = await readCustomProperty(MetaPrefix);
+        var prefixValue = await propertyController.readCustomProperty(MetaPrefix);
 
         console.log(`Read custom property "${MetaPrefix}": ${prefixValue}`);
 
@@ -119,7 +119,7 @@ function createButton(suffix = "")
         () =>
         {
             recolorButtons(button.id);
-            addCustomProperty(MetaPrefix, suffix);
+            propertyController.addCustomProperty(MetaPrefix, suffix);
         };
     return button;
 }

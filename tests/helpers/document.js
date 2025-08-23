@@ -6,7 +6,17 @@ class Element
         this.innerHTML = "";
         this.id = "";
         this.children = [];
-        this.onclick = () => {};
+        this.onclick =
+            () =>
+            {
+            };
+        this.classList =
+            {
+                add:
+                    () =>
+                    {
+                    },
+            };
     }
 
     appendChild(aChild)
@@ -31,9 +41,9 @@ class Document
             return result;
         }
 
-        for (const element of Object.values(this.elements)) 
+        for (const element of Object.values(this.elements))
         {
-            for (const child of element.children) 
+            for (const child of element.children)
             {
                 if (child.id == id)
                 {

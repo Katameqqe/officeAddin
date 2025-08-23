@@ -24,10 +24,8 @@ export default
                 Word: "readonly",
                 Excel: "readonly",
                 window: "readonly",
-                initCustomProp: "readonly",
                 fetch: "readonly",
-                addCustomProperty: "readonly",
-                readCustomProperty: "readonly",
+                CustomPropertyController: "readonly",
             },
         },
     },
@@ -35,7 +33,6 @@ export default
     {
         rules:
         {
-            'key-spacing': ["error", { "beforeColon": false, },],
             "object-shorthand": ["off",],
             'brace-style': ['error', 'allman',],
             'eol-last': ["error", "always",],

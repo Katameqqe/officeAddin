@@ -1,4 +1,43 @@
-// TODO: this file should be divided to separate files. One class - one file 
+class CustomPropertyController
+{
+    constructor(aHost)
+    {
+        if (aHost === Office.HostType.Word)
+        {
+            this.propertyController = new WordCustomProp();
+        }
+        else if (aHost === Office.HostType.Excel)
+        {
+            this.propertyController = new ExcelCustomProp();
+        }
+        else if (aHost === Office.HostType.PowerPoint)
+        {
+            //TODO: Implement PowerPoint implementation
+            console.error("Unsupported host application.");
+        }
+        else
+        {
+            console.error("Unsupported host application.");
+        }
+    }
+
+    async addCustomProperty(name, value)
+    {
+        return this.propertyController.addCustomProperty(name, value);
+    }
+
+    async readCustomProperty(name)
+    {
+        return this.propertyController.readCustomProperty(name);
+    }
+
+    async removeCustomProperty(value)
+    {
+        return this.propertyController.removeCustomProperty(value);
+    };
+}
+
+// TODO: this file should be divided to separate files. One class - one file
 class WordCustomProp
 {
     async addCustomProperty(name, value)
@@ -124,60 +163,4 @@ class ExcelCustomProp
     }
 }
 
-function initCustomProp()
-{
-    if (window.INFO.host === Office.HostType.Word)
-    {
-        const wordCustomProp = new WordCustomProp();
-        
-        window.addCustomProperty =
-            async (name, value) =>
-            {
-                await wordCustomProp.addCustomProperty(name, value);
-            };
-
-        window.readCustomProperty =
-            async (name) =>
-            {
-                return await wordCustomProp.readCustomProperty(name);
-            };
-
-        window.removeCustomProperty =
-            async (value) =>
-            {
-                await wordCustomProp.removeCustomProperty(value);
-            };
-    }
-    else if (window.INFO.host === Office.HostType.Excel)
-    {
-        const excelCustomProp = new ExcelCustomProp();
-
-        window.addCustomProperty =
-            async (name, value) =>
-            {
-                await excelCustomProp.addCustomProperty(name, value);
-            };
-
-        window.readCustomProperty =
-            async (name) =>
-            {
-                return await excelCustomProp.readCustomProperty(name);
-            };
-
-        window.removeCustomProperty =
-            async (value) =>
-            {
-                await excelCustomProp.removeCustomProperty(value);
-            };
-    }
-    else if (window.INFO.host === Office.HostType.PowerPoint)
-    {
-        //TODO: Implement PowerPoint implementation
-    }
-    else
-    {
-        console.error("Unsupported host application.");
-    }
-}
-
-module.exports.initCustomProp = initCustomProp;
+module.exports = CustomPropertyController;

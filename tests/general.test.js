@@ -1,25 +1,26 @@
-global.Office =     require('./office');
+global.Office =                     require('./helpers/office');
 
-const Window =      require('./window')
+const Window =                      require('./helpers/window')
 
-const customProp =  require('../src/taskpane/customProp')
-global.initCustomProp = customProp.initCustomProp;
+global.CustomPropertyController =   require('../src/taskpane/customProp')
 
-const fetch =       require('./fetch'); 
+global.fetch =                      require('./helpers/fetch');;
 
-global.fetch = fetch.fetch;
+const taskpane =                    require('../src/taskpane/taskpane')
 
-const taskpane =    require('../src/taskpane/taskpane')
+const Document =                    require('./helpers/document');
+const WordDocument =                require('./helpers/word/wordDocument');
 
-const Document =    require('./document');
+global.Word =                       require('./helpers/word/word')
 
 test('helloWorld',
     () =>
     {
         global.window = new Window();
         global.document = new Document();
+        global.Word.context.document = new WordDocument();
 
-        const info = {host: Office.HostType.Word};
+        const info = {host: Office.HostType.Word, };
         taskpane.init(info);
 
         expect(true).toBe(true);
