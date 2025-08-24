@@ -26,10 +26,6 @@
     "validate": "office-addin-manifest validate manifest.xml",
     "watch": "webpack --mode development --watch"
   },
-  "dependencies": {
-    "core-js": "^3.36.0",
-    "regenerator-runtime": "^0.14.1"
-  },
   "devDependencies": {
     "@babel/core": "^7.24.0",
     "@babel/preset-env": "^7.25.4",
@@ -63,7 +59,9 @@
   {
       "@microsoft/office-js": "^1.1.95",
       "@xmldom/xmldom": "^0.8.10",
-      "jest": "^29.7.0"
+      "jest": "^29.7.0",
+      "core-js": "^3.36.0",
+      "regenerator-runtime": "^0.14.1"
   },
   "prettier": "office-addin-prettier-config",
   "browserslist": [
