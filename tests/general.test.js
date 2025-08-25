@@ -14,14 +14,14 @@ const WordDocument =                require('./helpers/word/wordDocument');
 global.Word =                       require('./helpers/word/word')
 
 test('helloWorld',
-    () =>
+    async () =>
     {
         global.window = new Window();
         global.document = new Document();
         global.Word.context.document = new WordDocument();
 
         const info = {host: Office.HostType.Word, };
-        taskpane.init(info);
+        await taskpane.init(info);
 
-        expect(true).toBe(true);
+        expect(global.document.elements.app-body.children.length).toBe(5);
     });
