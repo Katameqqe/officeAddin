@@ -23,5 +23,5 @@ test('helloWorld',
         const info = {host: Office.HostType.Word, };
         await taskpane.init(info);
 
-        expect(global.document.elements.app-body.children.length).toBe(5);
+        expect(global.document.elements["app-body"].children.length).toBe(5);
     });
