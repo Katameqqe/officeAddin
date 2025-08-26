@@ -10,54 +10,65 @@ Office.onReady(
         init(info);
     });
 
+function isShouldProceed(anInfo)
+{
+    if (anInfo.host === Office.HostType.Word ||
+        anInfo.host === Office.HostType.Excel ||
+        (anInfo.host === Office.HostType.PowerPoint && Office.context.requirements.isSetSupported("PowerPointApi", "1.7")))
+    {
+        return true;
+    }
+
+    return false;
+}
+
 // TODO: Such a long function is a bad coding style. The code should be divided to separate functions and classes.
 async function init(info)
 {
+    if (!isShouldProceed(info))
+    {
+        return;
+    }
+
     propertyController = new CustomPropertyController(info.host);
 
-    if (info.host === Office.HostType.Word ||
-        info.host === Office.HostType.Excel ||
-        (info.host === Office.HostType.PowerPoint && Office.context.requirements.isSetSupported("PowerPointApi", "1.7")))
+    const ListSuffix = await fetch(address)
+        .then(res => res.json())
+        .then(resJson => resJson.names)
+        .catch(
+            err =>
+            {
+                console.error("Error fetching suffix list:", err);
+                return ["Document", "Default", "Restricted", "Protected", "NoLabel",];
+            });
+
+    console.log(JSON.stringify(ListSuffix,null,2));
+
+    if (!ListSuffix.includes("NoLabel"))
     {
-        const ListSuffix = await fetch(address)
-            .then(res => res.json())
-            .then(resJson => resJson.names)
-            .catch(
-                err =>
-                {
-                    console.error("Error fetching suffix list:", err);
-                    return ["Document", "Default", "Restricted", "Protected", "NoLabel",];
-                });
-
-        console.log(JSON.stringify(ListSuffix,null,2));
-
-        if (!ListSuffix.includes("NoLabel"))
-        {
-            ListSuffix.push("NoLabel");
-        }
-
-        document.getElementById("app-body").style.display = "flex";
-
-        for (const suffix of ListSuffix)
-        {
-            const newButton = createButton(suffix);
-            document.getElementById("app-body").appendChild(newButton);
-        }
-
-        document.getElementById("NoLabel").onclick =
-        () =>
-        {
-            recolorButtons("NoLabel");
-            propertyController.addCustomProperty(MetaPrefix, "", "NoLabel");
-        };
-
-        var prefixValue = await propertyController.readCustomProperty(MetaPrefix);
-
-        console.log(`Read custom property "${MetaPrefix}": ${prefixValue}`);
-
-        readClassif(document, ListSuffix, prefixValue);
-
+        ListSuffix.push("NoLabel");
     }
+
+    document.getElementById("app-body").style.display = "flex";
+
+    for (const suffix of ListSuffix)
+    {
+        const newButton = createButton(suffix);
+        document.getElementById("app-body").appendChild(newButton);
+    }
+
+    document.getElementById("NoLabel").onclick =
+    () =>
+    {
+        recolorButtons("NoLabel");
+        propertyController.addCustomProperty(MetaPrefix, "", "NoLabel");
+    };
+
+    var prefixValue = await propertyController.readCustomProperty(MetaPrefix);
+
+    console.log(`Read custom property "${MetaPrefix}": ${prefixValue}`);
+
+    readClassif(document, ListSuffix, prefixValue);
 };
 
 function readClassif(document, ListSuffix, prefix)
