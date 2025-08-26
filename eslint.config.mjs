@@ -1,7 +1,6 @@
 import globals from "globals";
 import pluginJs from "@eslint/js";
 
-
 /** @type {import('eslint').Linter.Config[]} */
 export default
 [
@@ -26,6 +25,8 @@ export default
                 window: "readonly",
                 fetch: "readonly",
                 CustomPropertyController: "readonly",
+                WordCustomProp: "readonly",
+                ExcelCustomProp: "readonly",
             },
         },
     },
