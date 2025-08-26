@@ -37,7 +37,6 @@ async function init(info)
         }
 
         document.getElementById("app-body").style.display = "flex";
-        //document.getElementById("run").onclick = runDocument;
 
         for (const suffix of ListSuffix)
         {
@@ -56,40 +55,34 @@ async function init(info)
 
         console.log(`Read custom property "${MetaPrefix}": ${prefixValue}`);
 
-        // TODO: If it is needed to write a comment - then it means that this code should be extracted to separate function
-        // If the custom property value is in the list
-        if (ListSuffix.includes(prefixValue))
-        {
-            console.log(`Custom property "${MetaPrefix}" exists with value: ${prefixValue}`);
-            document.getElementById(prefixValue).classList.add("meta-button-active");
-        }
-        // If the custom property does not exist or is empty
-        else if (prefixValue === null || prefixValue === "")
-        {
-            console.log(`Custom property "${MetaPrefix}" exists with value: "NoLabel"`);
-            document.getElementById("NoLabel").classList.add("meta-button-active");
-        }
-        // If the custom property exists but is not in the list
-        else
-        {
-            console.log(`Custom property "${MetaPrefix}" exists with value: ${prefixValue}`);
-            const newButton = createButton(prefixValue)
-            newButton.classList.add("meta-button-active");
-            document.getElementById("app-body").insertBefore(newButton, document.getElementById("NoLabel"));
-        };
+        readClassif(document, ListSuffix, prefixValue);
 
-        /*
-document.getElementById("add-prop").onclick = () => {
-  const value = document.getElementById("custom-prop-value").value;
-  addCustomProperty(MetaPrefix, value, );
-};
-document.getElementById("remove-prop").onclick = () => {
-  const value = document.getElementById("remove-prop-value").value;
-  removeCustomProperty(value);
-};
-*/
     }
 };
+
+function readClassif(document, ListSuffix, prefix)
+{
+    // If the custom property value is in the list
+    if (ListSuffix.includes(prefix))
+    {
+        console.log(`Custom property "${MetaPrefix}" exists with value: ${prefix}`);
+        document.getElementById(prefix).classList.add("meta-button-active");
+    }
+    // If the custom property does not exist or is empty
+    else if (prefix === null || prefix === "")
+    {
+        console.log(`Custom property "${MetaPrefix}" exists with value: "NoLabel"`);
+        document.getElementById("NoLabel").classList.add("meta-button-active");
+    }
+    // If the custom property exists but is not in the list
+    else
+    {
+        console.log(`Custom property "${MetaPrefix}" exists with value: ${prefixValue}`);
+        const newButton = createButton(prefixValue)
+        newButton.classList.add("meta-button-active");
+        document.getElementById("app-body").insertBefore(newButton, document.getElementById("NoLabel"));
+    };
+}
 
 function recolorButtons(activeButtonId, color = "meta-button-active")
 {
@@ -120,40 +113,9 @@ function createButton(suffix = "")
         {
             recolorButtons(button.id);
             propertyController.addCustomProperty(MetaPrefix, suffix);
+            //console.log(`Button "${button.id}" clicked.`);
         };
     return button;
 }
-
-/*
-export async function runDocument() {
-  return Word.run(async (context) => {
-    const properties = context.document.properties.customProperties;
-    properties.load("key,type,value");
-
-    await context.sync();
-    console.log(JSON.stringify(properties.items, null, 2));
-});
-}
-
-export async function runWorkbook() {
-  return Excel.run(async (context) => {
-    const properties = context.workbook.properties.custom;
-    properties.load("key,type,value");
-
-    await context.sync();
-    console.log(JSON.stringify(properties.items, null, 2));
-});
-}
-
-export async function runPresentation() {
-  return PowerPoint.run(async (context) => {
-    const properties = context.presentation.properties.customProperties;
-    properties.load("key,type,value");
-
-    await context.sync();
-    console.log(JSON.stringify(properties.items, null, 2));
-});
-}
-*/
 
 module.exports.init = init;
