@@ -113,6 +113,7 @@ function createButton(suffix = "")
         {
             recolorButtons(button.id);
             propertyController.addCustomProperty(MetaPrefix, suffix);
+            //console.log(`Button "${button.id}" clicked.`);
         };
     return button;
 }

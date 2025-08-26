@@ -61,5 +61,14 @@ class Document
         // this.elements[anElementName] = new Element();
         return new Element();
     }
+
+    querySelectorAll(aSelector)
+    {
+        if (aSelector === ".pref-button")
+        {
+            return Object.values(this.elements).flatMap(el => el.children).filter(el => el.classList.add.toString().includes("pref-button"));
+        }
+        return [];
+    }
 }
 module.exports = Document;

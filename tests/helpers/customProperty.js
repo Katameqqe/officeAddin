@@ -5,6 +5,7 @@ class CustomProperty
         this.name = aName;
         this.value = aValue;
         this.isNullObject = false;
+        this.toDelete = false;
     }
 
     set(aData)
