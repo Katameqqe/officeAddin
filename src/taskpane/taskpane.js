@@ -77,8 +77,8 @@ function readClassif(document, ListSuffix, prefix)
     // If the custom property exists but is not in the list
     else
     {
-        console.log(`Custom property "${MetaPrefix}" exists with value: ${prefixValue}`);
-        const newButton = createButton(prefixValue)
+        console.log(`Custom property "${MetaPrefix}" exists with value: ${prefix}`);
+        const newButton = createButton(prefix)
         newButton.classList.add("meta-button-active");
         document.getElementById("app-body").insertBefore(newButton, document.getElementById("NoLabel"));
     };

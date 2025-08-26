@@ -55,18 +55,16 @@ test('Word onclick',
 
         const info = {host: Office.HostType.Word, };
         await taskpane.init(info);
-        
+
         const button = global.document.elements["app-body"].children.find(
             el => el.id === "Default"
         );
 
         button.onclick();
 
-        
         //await expect(global.Word.context.document.properties.customProperties.items.name).toBe("Classification");
         //await expect(global.Word.context.document.properties.customProperties.items.value).toBe("Default");
-        
+
         await expect(global.document.elements["app-body"].children.length).toBe(5);
         await expect(global.Word.context.document.properties.customProperties.items[0].value).toBe("Default");
-
     });

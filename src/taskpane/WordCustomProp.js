@@ -46,7 +46,7 @@ class WordCustomProp
                 await context.sync();
 
                 const exists = customProps.items.find(item => item.key === name)
-                
+
                 if (exists)
                 {
                     exists.delete();
