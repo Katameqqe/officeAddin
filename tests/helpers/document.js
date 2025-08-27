@@ -1,10 +1,10 @@
 class Element
 {
-    constructor()
+    constructor(id="")
     {
         this.style = { display: "", };
         this.innerHTML = "";
-        this.id = "";
+        this.id = id;
         this.children = [];
         this.onclick =
             () =>
@@ -30,7 +30,7 @@ class Document
     constructor()
     {
         this.elements = {};
-        this.elements["app-body"] = new Element();
+        this.elements["classificationGroup"] = new Element();
     }
 
     getElementById(id)
@@ -59,7 +59,7 @@ class Document
     createElement(anElementName)
     {
         // this.elements[anElementName] = new Element();
-        return new Element();
+        return new Element(anElementName);
     }
 
     querySelectorAll(aSelector)

@@ -36,14 +36,14 @@ async function init(info)
     const ListSuffix = await getLabels();
     createButtons(ListSuffix);
 
-    var prefixValue = await propertyController.readCustomProperty(MetaPrefix);
+    var classifValue = await propertyController.readCustomProperty(MetaPrefix);
 
-    console.log(`Read custom property "${MetaPrefix}": ${prefixValue}`);
+    console.log(`Read custom property "${MetaPrefix}": ${classifValue}`);
 
-    //readClassif(document, ListSuffix, prefixValue);
+    readClassif(ListSuffix, classifValue);
 };
 
-function readClassif(document, ListSuffix, prefix)
+function readClassifButton(ListSuffix, prefix)
 {
     // If the custom property value is in the list
     if (ListSuffix.includes(prefix))
@@ -66,6 +66,20 @@ function readClassif(document, ListSuffix, prefix)
         newButton.classList.add("meta-button-active");
         document.getElementById("app-body").insertBefore(newButton, document.getElementById("NoLabel"));
     };
+}
+function readClassif(ListSuffix, suffix)
+{
+    if (ListSuffix.includes(suffix))
+    {
+        console.log(`Custom property "${MetaPrefix}" exists with value: ${suffix}`);
+        document.querySelector(`input[value="${suffix}"]`).checked = true;
+    }
+    else 
+    {
+        console.log(`Custom property "${MetaPrefix}" exists out of list with value: ${suffix}`);
+        propertyController.removeCustomProperty(MetaPrefix);
+        document.getElementById("_clear_classification_").checked = true;
+    }
 }
 
 function recolorButtons(activeButtonId, color = "meta-button-active")
@@ -172,7 +186,7 @@ function clearClassificationItem(itemIsChecked)
     <hr/>
     <div class="ms-ChoiceField">
         <label for="_clear_classification_" class="ms-ChoiceField-field">
-            <input id="_clear_classification_" class="ms-ChoiceField-input" type="radio" name="classificationRadio" ${isChecked} onchange="">
+            <input id="_clear_classification_" class="ms-ChoiceField-input" type="radio" name="classificationRadio" ${isChecked} onchange="propertyController.removeCustomProperty(MetaPrefix)">
             <span class="ms-Label">Not classified</span>
         </label>
     </div>`;
