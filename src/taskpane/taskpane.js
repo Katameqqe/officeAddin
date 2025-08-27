@@ -2,6 +2,7 @@
 const MetaPrefix = "Classification";
 const address = "https://192.168.128.4:443/list"
 let propertyController = null;
+const isButtons = false; // false - radio buttons, true - buttons
 
 Office.onReady(
     async (info) =>
@@ -32,47 +33,14 @@ async function init(info)
 
     propertyController = new CustomPropertyController(info.host);
 
-    // TODO: getLabels function
-    const ListSuffix = await fetch(address)
-        .then(res => res.json())
-        .then(resJson => resJson.names)
-        .catch(
-            err =>
-            {
-                console.error("Error fetching suffix list:", err);
-                return ["Document", "Default", "Restricted", "Protected", "NoLabel",];
-            });
-
-    console.log(JSON.stringify(ListSuffix,null,2));
-
-    if (!ListSuffix.includes("NoLabel"))
-    {
-        ListSuffix.push("NoLabel");
-    }
-    // ---------------------
-
-    document.getElementById("app-body").style.display = "flex";
-
-    // TODO: create buttons function
-    for (const suffix of ListSuffix)
-    {
-        const newButton = createButton(suffix);
-        document.getElementById("app-body").appendChild(newButton);
-    }
-
-    document.getElementById("NoLabel").onclick =
-    () =>
-    {
-        recolorButtons("NoLabel");
-        propertyController.addCustomProperty(MetaPrefix, "", "NoLabel");
-    };
-    // ----------------
+    const ListSuffix = await getLabels();
+    createButtons(ListSuffix);
 
     var prefixValue = await propertyController.readCustomProperty(MetaPrefix);
 
     console.log(`Read custom property "${MetaPrefix}": ${prefixValue}`);
 
-    readClassif(document, ListSuffix, prefixValue);
+    //readClassif(document, ListSuffix, prefixValue);
 };
 
 function readClassif(document, ListSuffix, prefix)
@@ -132,6 +100,87 @@ function createButton(suffix = "")
             //console.log(`Button "${button.id}" clicked.`);
         };
     return button;
+}
+
+function createButtons(ListSuffix)
+{
+    if (isButtons){
+        for (const suffix of ListSuffix)
+        {
+            const newButton = createButton(suffix);
+            document.getElementById("app-body").appendChild(newButton);
+        }
+    } else {
+        for (const suffix of ListSuffix)
+        {
+            const node = generateClassificationItem(suffix, false);
+            document.getElementById("classificationGroup").appendChild(node);
+        }
+        const resetNode = clearClassificationItem(false);
+        document.getElementById("classificationGroup").appendChild(resetNode);
+    }
+}
+
+async function getLabels()
+{
+    const List = await fetch(address)
+        .then(res => res.json())
+        .then(resJson => resJson.names)
+        .catch(
+            err =>
+            {
+                console.error("Error fetching suffix list:", err);
+                return ["Document", "Default", "Restricted", "Protected",];
+            });
+
+    console.log(JSON.stringify(List,null,2));
+    return List;
+}
+
+function generateClassificationItem(itemText, itemIsChecked)
+{
+    let isChecked = "";
+    if (itemIsChecked)
+    {
+        isChecked = `checked="checked"`;
+    }
+
+    const itemHTML =
+    `<div class="ms-ChoiceField">
+        <label class="ms-ChoiceField-field">
+            <input class="ms-ChoiceField-input" type="radio" name="classificationRadio" value="${itemText}" ${isChecked} onchange="propertyController.addCustomProperty(MetaPrefix, this.value);">
+            <span class="ms-Label">${itemText}</span>
+        </label>
+    </div>`;
+
+    const temp = document.createElement('div');
+    temp.innerHTML = itemHTML;
+    const node = temp.firstElementChild;
+    return node;
+}
+
+function clearClassificationItem(itemIsChecked)
+{
+    let isChecked = "";
+    if (itemIsChecked)
+    {
+        isChecked = `checked="checked"`;
+    }
+
+    const itemHTML =
+    `
+    <hr/>
+    <div class="ms-ChoiceField">
+        <label for="_clear_classification_" class="ms-ChoiceField-field">
+            <input id="_clear_classification_" class="ms-ChoiceField-input" type="radio" name="classificationRadio" ${isChecked} onchange="">
+            <span class="ms-Label">Not classified</span>
+        </label>
+    </div>`;
+
+    const temp = document.createElement('div');
+    temp.innerHTML = itemHTML;
+    const node = temp;
+    return node;
 }
 
 module.exports.init = init;

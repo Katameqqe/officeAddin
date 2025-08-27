@@ -27,19 +27,14 @@
 </head>
 
 <body class="ms-font-m ms-welcome ms-Fabric">
-    <main id="app-body" class="ms-welcome__main">
-        <div class="edit-properties" style="display: none;">
-            <button id="run">Show Custom Prop</button>
-            <div class="input-row">
-                <input type="text" id="custom-prop-value" placeholder="Property Value">
-                <button id="add-prop">Add Property</button>
-            </div>
-            <div class="input-row">
-                <input type="text" id="remove-prop-value" placeholder="Property Value">
-                <button id="remove-prop">Remove Property</button>
-            </div>
-        </div>
-        <p><label id="item-subject"></label></p>
+    <section id="display-classification-panel" class="ms-welcome__main">
+    </section>
+    <section id="classification-disabled-panel" class="ms-welcome__main" style="display: none;">
+        <div class="ms-font-xl ms-settings__content__subtitle">Classification Is Disabled</div>
+    </section>
+    <main id="compose-panel" class="ms-welcome__main" style="display: flex;">
+        <div class="ms-font-xl ms-settings__content__subtitle">Assign Classification Label</div>
+        <div id="classificationGroup" class="ms-ChoiceFieldGroup"></div>
     </main>
 </body>
 
