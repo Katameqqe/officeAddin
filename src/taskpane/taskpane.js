@@ -32,6 +32,7 @@ async function init(info)
 
     propertyController = new CustomPropertyController(info.host);
 
+    // TODO: getLabels function
     const ListSuffix = await fetch(address)
         .then(res => res.json())
         .then(resJson => resJson.names)
@@ -48,9 +49,11 @@ async function init(info)
     {
         ListSuffix.push("NoLabel");
     }
+    // ---------------------
 
     document.getElementById("app-body").style.display = "flex";
 
+    // TODO: create buttons function
     for (const suffix of ListSuffix)
     {
         const newButton = createButton(suffix);
@@ -63,6 +66,7 @@ async function init(info)
         recolorButtons("NoLabel");
         propertyController.addCustomProperty(MetaPrefix, "", "NoLabel");
     };
+    // ----------------
 
     var prefixValue = await propertyController.readCustomProperty(MetaPrefix);
 
@@ -85,6 +89,7 @@ function readClassif(document, ListSuffix, prefix)
         console.log(`Custom property "${MetaPrefix}" exists with value: "NoLabel"`);
         document.getElementById("NoLabel").classList.add("meta-button-active");
     }
+    //TODO: If custom property exists, but is not in the list - then clear custom property for document and select "No Label"
     // If the custom property exists but is not in the list
     else
     {
