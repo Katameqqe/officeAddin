@@ -23,8 +23,8 @@ module.exports =
             entry:
             {
                 polyfill: ["core-js/stable", "regenerator-runtime/runtime",],
-                taskpane: ["./src/taskpane/taskpane.html",],
-                commands: "./src/commands/commands.js",
+                taskpane: ["./src/index.html",],
+                //commands: "./src/commands/commands.js",
             },
             output:
             {
@@ -65,8 +65,8 @@ module.exports =
             [
                 new HtmlWebpackPlugin(
                     {
-                        filename: "taskpane.html",
-                        template: "./src/taskpane/taskpane.html",
+                        filename: "index.html",
+                        template: "./src/index.html",
                         chunks: ["polyfill", "taskpane",],
                     }),
                 new CopyWebpackPlugin(
@@ -94,12 +94,14 @@ module.exports =
                             },
                         ],
                     }),
+                /*
                 new HtmlWebpackPlugin(
                     {
                         filename: "commands.html",
                         template: "./src/commands/commands.html",
                         chunks: ["polyfill", "commands",],
                     }),
+                */
             ],
             devServer:
             {
