@@ -69,15 +69,11 @@ test('Word onclick',
         global.Word.context.document = new WordDocument();
 
         const info = {host: Office.HostType.Word, };
+        
         await taskpane.init(info);
-
         const button = document.querySelector('input[value="Default"]');
-
-        global.propertyController = {
-            addCustomProperty: jest.fn(),
-        };
-        button.checked = true;
-        button.dispatchEvent(new Event("change", { bubbles: true }));
+        
+        button.onchange();
 
         //await expect(global.Word.context.document.properties.customProperties.items.name).toBe("Classification");
         //await expect(global.Word.context.document.properties.customProperties.items.value).toBe("Default");

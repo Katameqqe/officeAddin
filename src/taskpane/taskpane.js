@@ -32,7 +32,8 @@ async function init(info)
     }
 
     propertyController = new CustomPropertyController(info.host);
-
+    global.propertyController = propertyController; // or window.propertyController in browser
+    global.MetaPrefix = MetaPrefix;
     const ListSuffix = await getLabels();
     createButtons(ListSuffix);
 
