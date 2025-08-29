@@ -7,15 +7,15 @@ global.Office =                     require('./helpers/office');
 
 const Window =                      require('./helpers/window')
 
-global.CustomPropertyController =   require('../src/taskpane/customProp')
+global.CustomPropertyController =   require('../src/customProp')
 
 global.fetch =                      require('./helpers/fetch');;
 
-const taskpane =                    require('../src/taskpane/taskpane')
+const taskpane =                    require('../src/index')
 taskpane.setDebug(true);
 
-global.WordCustomProp =             require('../src/taskpane/WordCustomProp');
-global.ExcelCustomProp =            require('../src/taskpane/ExcelCustomProp');
+global.WordCustomProp =             require('../src/WordCustomProp');
+global.ExcelCustomProp =            require('../src/ExcelCustomProp');
 
 const Document =                    require('./helpers/document');
 const WordDocument =                require('./helpers/word/wordDocument');
@@ -30,7 +30,7 @@ import path from "path";
 beforeEach(
     () => 
     {
-        const html = fs.readFileSync(path.resolve(__dirname, "../src/taskpane/taskpane.html"), "utf8");
+        const html = fs.readFileSync(path.resolve(__dirname, "../src/index.html"), "utf8");
         document.documentElement.innerHTML = html;
     });
 
@@ -74,7 +74,7 @@ test('Word onclick',
         const button = document.querySelector('input[value="Default"]');
         
         button.onchange();
-        
+
         await expect(document.getElementById("classificationGroup").children.length).toBe(5);
         console.log(global.Word.context.document.properties.customProperties.items);
         await expect(global.Word.context.document.properties.customProperties.items[0].value).toBe("Default");
