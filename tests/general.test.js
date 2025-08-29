@@ -12,6 +12,7 @@ global.CustomPropertyController =   require('../src/taskpane/customProp')
 global.fetch =                      require('./helpers/fetch');;
 
 const taskpane =                    require('../src/taskpane/taskpane')
+taskpane.setDebug(true);
 
 global.WordCustomProp =             require('../src/taskpane/WordCustomProp');
 global.ExcelCustomProp =            require('../src/taskpane/ExcelCustomProp');
@@ -69,15 +70,11 @@ test('Word onclick',
         global.Word.context.document = new WordDocument();
 
         const info = {host: Office.HostType.Word, };
-        
         await taskpane.init(info);
         const button = document.querySelector('input[value="Default"]');
         
         button.onchange();
-
-        //await expect(global.Word.context.document.properties.customProperties.items.name).toBe("Classification");
-        //await expect(global.Word.context.document.properties.customProperties.items.value).toBe("Default");
-
+        
         await expect(document.getElementById("classificationGroup").children.length).toBe(5);
         console.log(global.Word.context.document.properties.customProperties.items);
         await expect(global.Word.context.document.properties.customProperties.items[0].value).toBe("Default");

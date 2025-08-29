@@ -2,7 +2,8 @@
 const MetaPrefix = "Classification";
 const address = "https://192.168.128.4:443/list"
 let propertyController = null;
-const isButtons = false; // false - radio buttons, true - buttons
+let isButtons = false; // false - radio buttons, true - buttons
+let isDebug = false; 
 
 Office.onReady(
     async (info) =>
@@ -32,8 +33,11 @@ async function init(info)
     }
 
     propertyController = new CustomPropertyController(info.host);
-    global.propertyController = propertyController; // or window.propertyController in browser
-    global.MetaPrefix = MetaPrefix;
+    if (isDebug)
+    {
+        global.MetaPrefix = MetaPrefix;
+        global.propertyController = propertyController;
+    }
     const ListSuffix = await getLabels();
     createButtons(ListSuffix);
 
@@ -199,3 +203,4 @@ function clearClassificationItem(itemIsChecked)
 }
 
 module.exports.init = init;
+module.exports.setDebug = (val) => { isDebug = val; };
