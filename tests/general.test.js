@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-
+/* eslint-env jest */
 
 global.Office =                     require('./helpers/office');
 
@@ -24,11 +24,11 @@ const excelWorkbook =               require('./helpers/excel/excelWorkbook');
 global.Word =                       require('./helpers/word/word')
 global.Excel =                      require('./helpers/excel/excel')
 
-import fs from "fs";
-import path from "path";
+const fs = require("fs");
+const path = require("path");
 
 beforeEach(
-    () => 
+    () =>
     {
         const html = fs.readFileSync(path.resolve(__dirname, "../src/index.html"), "utf8");
         document.documentElement.innerHTML = html;
@@ -72,7 +72,7 @@ test('Word onclick',
         const info = {host: Office.HostType.Word, };
         await taskpane.init(info);
         const button = document.querySelector('input[value="Default"]');
-        
+
         button.onchange();
 
         await expect(document.getElementById("classificationGroup").children.length).toBe(5);
