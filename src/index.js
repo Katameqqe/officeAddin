@@ -1,9 +1,13 @@
 
 const MetaPrefix = "Classification";
 const address = "https://192.168.128.4:443/list"
+const HostName = "GTB.test.com";
+const userName = "USERRR";
+const GUID = "{123e4567-e89b-12d3-a456-426614174000}";
+
 let propertyController = null;
 let isButtons = false; // false - radio buttons, true - buttons
-let isDebug = false; 
+let isDebug = false;
 
 Office.onReady(
     async (info) =>
@@ -24,7 +28,6 @@ function isShouldProceed(anInfo)
     return false;
 }
 
-// TODO: Such a long function is a bad coding style. The code should be divided to separate functions and classes.
 async function init(info)
 {
     if (!isShouldProceed(info))
@@ -32,7 +35,7 @@ async function init(info)
         return;
     }
 
-    propertyController = new CustomPropertyController(info.host);
+    propertyController = new CustomPropertyController(info.host, userName, HostName, GUID);
     if (isDebug)
     {
         global.MetaPrefix = MetaPrefix;
@@ -43,9 +46,9 @@ async function init(info)
 
     var classifValue = await propertyController.readCustomProperty(MetaPrefix);
 
-    console.log(`Read custom property "${MetaPrefix}": ${classifValue}`);
+    console.log(`Read custom property "${MetaPrefix}": ${JSON.stringify(classifValue, null, 2)}`);
 
-    readClassif(ListSuffix, classifValue);
+    readClassif(ListSuffix, classifValue[MetaPrefix]);
 };
 
 function readClassifButton(ListSuffix, prefix)
@@ -62,7 +65,6 @@ function readClassifButton(ListSuffix, prefix)
         console.log(`Custom property "${MetaPrefix}" exists with value: "NoLabel"`);
         document.getElementById("NoLabel").classList.add("meta-button-active");
     }
-    //TODO: If custom property exists, but is not in the list - then clear custom property for document and select "No Label"
     // If the custom property exists but is not in the list
     else
     {
@@ -79,7 +81,7 @@ function readClassif(ListSuffix, suffix)
         console.log(`Custom property "${MetaPrefix}" exists with value: ${suffix}`);
         document.querySelector(`input[value="${suffix}"]`).checked = true;
     }
-    else 
+    else
     {
         console.log(`Custom property "${MetaPrefix}" exists out of list with value: ${suffix}`);
         propertyController.removeCustomProperty(MetaPrefix);
@@ -123,13 +125,16 @@ function createButton(suffix = "")
 
 function createButtons(ListSuffix)
 {
-    if (isButtons){
+    if (isButtons)
+    {
         for (const suffix of ListSuffix)
         {
             const newButton = createButton(suffix);
             document.getElementById("app-body").appendChild(newButton);
         }
-    } else {
+    }
+    else
+    {
         for (const suffix of ListSuffix)
         {
             const node = generateClassificationItem(suffix, false);
@@ -199,8 +204,13 @@ function clearClassificationItem(itemIsChecked)
     const temp = document.createElement('div');
     temp.innerHTML = itemHTML;
     const node = temp;
+
     return node;
 }
 
 module.exports.init = init;
-module.exports.setDebug = (val) => { isDebug = val; };
+module.exports.setDebug =
+(val) =>
+{
+    isDebug = val;
+};

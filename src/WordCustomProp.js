@@ -1,5 +1,12 @@
 class WordCustomProp
 {
+    constructor(userName, HostName, GUID)
+    {
+        this.userName = userName;
+        this.HostName = HostName;
+        this.GUID = GUID;
+    }
+
     async addCustomProperty(name, value)
     {
         return Word.run(
@@ -10,6 +17,10 @@ class WordCustomProp
                 await context.sync();
 
                 customProps.add(name, value);
+                customProps.add("ClassifiedBy", this.userName);
+                customProps.add("ClassificationHost", this.HostName);
+                customProps.add("ClassificationDate", new Date().toLocaleString());
+                customProps.add("ClassificationGUID", this.GUID);
                 await context.sync();
                 console.log(`Custom property "${name}" added with value: ${value}`);
             });
@@ -24,15 +35,30 @@ class WordCustomProp
                 customProps.load("items");
                 await context.sync();
 
-                const exists = customProps.items.find(item => item.key === name)
+                const mainProp = customProps.items.find(item => item.key === name);
 
-                if (!exists)
+                const classifiedBy = customProps.items.find(item => item.key === "ClassifiedBy");
+                const classificationHost = customProps.items.find(item => item.key === "ClassificationHost");
+                const classificationDate = customProps.items.find(item => item.key === "ClassificationDate");
+                const classificationGUID = customProps.items.find(item => item.key === "ClassificationGUID");
+
+                if (mainProp && classifiedBy && classificationHost && classificationDate && classificationGUID)
                 {
-                    console.log(`Custom property "${name}" does not exist.`);
-                    return null;
+                    return {
+                        [name]:             mainProp.value,
+                        ClassifiedBy:       classifiedBy.value,
+                        ClassificationHost: classificationHost.value,
+                        ClassificationDate: classificationDate.value,
+                        ClassificationGUID: classificationGUID.value
+                    };
                 }
-                console.log("Custom Properties:", exists.value);
-                return exists.value;
+                else
+                {
+                    console.log(`One or more classification properties do not exist.`);
+                    return {
+                        [name]: null
+                    };
+                }
             });
     }
 
@@ -45,13 +71,22 @@ class WordCustomProp
                 customProps.load("items");
                 await context.sync();
 
-                const exists = customProps.items.find(item => item.key === name)
+                const mainProp = customProps.items.find(item => item.key === name)
 
-                if (exists)
+                const classifiedBy = customProps.items.find(item => item.key === "ClassifiedBy");
+                const classificationHost = customProps.items.find(item => item.key === "ClassificationHost");
+                const classificationDate = customProps.items.find(item => item.key === "ClassificationDate");
+                const classificationGUID = customProps.items.find(item => item.key === "ClassificationGUID");
+
+                if (mainProp && classifiedBy && classificationHost && classificationDate && classificationGUID)
                 {
-                    exists.delete();
+                    mainProp.delete();
+                    classifiedBy.delete();
+                    classificationHost.delete();
+                    classificationDate.delete();
+                    classificationGUID.delete();
                     await context.sync();
-                    console.log(`Custom property "${name}" removed.`);
+                    console.log(`Custom property "${name}" and related classification properties removed.`);
                 }
                 else
                 {

@@ -1,14 +1,14 @@
 class CustomPropertyController
 {
-    constructor(aHost)
+    constructor(aHost, userName, HostName, GUID)
     {
         if (aHost === Office.HostType.Word)
         {
-            this.propertyController = new WordCustomProp();
+            this.propertyController = new WordCustomProp(userName, HostName, GUID);
         }
         else if (aHost === Office.HostType.Excel)
         {
-            this.propertyController = new ExcelCustomProp();
+            this.propertyController = new ExcelCustomProp(userName, HostName, GUID);
         }
         else if (aHost === Office.HostType.PowerPoint)
         {
