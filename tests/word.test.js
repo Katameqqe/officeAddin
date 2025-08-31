@@ -4,6 +4,7 @@ global.Office =                     require('./helpers/office');
 const Window =                      require('./helpers/window')
 
 global.CustomPropertyController =   require('../src/customPropertyController')
+global.CustomClassification =       require('../src/customClassification')
 
 global.fetch =                      require('./helpers/fetch');;
 
@@ -40,9 +41,8 @@ test('Word onclick',
 
         const info = {host: Office.HostType.Word, };
         await taskpane.init(info);
-        const button = document.querySelector('input[value="Default"]');
 
-        button.onchange();
+        taskpane.classificationSelected("Default");
 
         await expect(document.getElementById("classificationGroup").children.length).toBe(5);
         console.log(global.Word.context.document.properties.customProperties.items);
