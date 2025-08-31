@@ -6,8 +6,6 @@ const userName = "USERRR";
 const GUID = "{123e4567-e89b-12d3-a456-426614174000}";
 
 let propertyController = null;
-let isButtons = false; // false - radio buttons, true - buttons
-let isDebug = false;
 
 Office.onReady(
     async (info) =>
@@ -35,114 +33,32 @@ async function init(info)
         return;
     }
 
-    propertyController = new CustomPropertyController(info.host, userName, HostName, GUID);
-    if (isDebug)
-    {
-        global.MetaPrefix = MetaPrefix;
-        global.propertyController = propertyController;
-    }
+    propertyController = new CustomPropertyController(info.host);
+
     const ListSuffix = await getLabels();
-    createButtons(ListSuffix);
 
-    var classifValue = await propertyController.readCustomProperty(MetaPrefix);
+    // We better get classification from document before. And then "createButtons" with selected classification
+    const classification = await propertyController.readCustomProperty(MetaPrefix);
+    console.log(`Read custom property "${MetaPrefix}": ${JSON.stringify(classification, null, 2)}`);
 
-    console.log(`Read custom property "${MetaPrefix}": ${JSON.stringify(classifValue, null, 2)}`);
-
-    readClassif(ListSuffix, classifValue[MetaPrefix]);
+    createButtons(ListSuffix, classification);
 };
 
-function readClassifButton(ListSuffix, prefix)
+function createButtons(ListSuffix, aSelectedClassification)
 {
-    // If the custom property value is in the list
-    if (ListSuffix.includes(prefix))
+    const clearSelected = aSelectedClassification == null;
+    for (const suffix of ListSuffix)
     {
-        console.log(`Custom property "${MetaPrefix}" exists with value: ${prefix}`);
-        document.getElementById(prefix).classList.add("meta-button-active");
-    }
-    // If the custom property does not exist or is empty
-    else if (prefix === null || prefix === "")
-    {
-        console.log(`Custom property "${MetaPrefix}" exists with value: "NoLabel"`);
-        document.getElementById("NoLabel").classList.add("meta-button-active");
-    }
-    // If the custom property exists but is not in the list
-    else
-    {
-        console.log(`Custom property "${MetaPrefix}" exists with value: ${prefix}`);
-        const newButton = createButton(prefix)
-        newButton.classList.add("meta-button-active");
-        document.getElementById("app-body").insertBefore(newButton, document.getElementById("NoLabel"));
-    };
-}
-function readClassif(ListSuffix, suffix)
-{
-    if (ListSuffix.includes(suffix))
-    {
-        console.log(`Custom property "${MetaPrefix}" exists with value: ${suffix}`);
-        document.querySelector(`input[value="${suffix}"]`).checked = true;
-    }
-    else
-    {
-        console.log(`Custom property "${MetaPrefix}" exists out of list with value: ${suffix}`);
-        propertyController.removeCustomProperty(MetaPrefix);
-        document.getElementById("_clear_classification_").checked = true;
-    }
-}
-
-function recolorButtons(activeButtonId, color = "meta-button-active")
-{
-    const buttons = document.querySelectorAll(".pref-button");
-
-    buttons.forEach(
-        btn =>
+        let isSelected = false;
+        if (!clearSelected)
         {
-            if (btn.id === activeButtonId)
-            {
-                btn.classList.add(color);
-            }
-            else
-            {
-                btn.classList.remove(color);
-            }
-        });
-}
-
-function createButton(suffix = "")
-{
-    const button = document.createElement("button");
-    button.id = suffix;
-    button.className = "pref-button meta-button";
-    button.textContent = suffix;
-    button.onclick =
-        () =>
-        {
-            recolorButtons(button.id);
-            propertyController.addCustomProperty(MetaPrefix, suffix);
-            //console.log(`Button "${button.id}" clicked.`);
-        };
-    return button;
-}
-
-function createButtons(ListSuffix)
-{
-    if (isButtons)
-    {
-        for (const suffix of ListSuffix)
-        {
-            const newButton = createButton(suffix);
-            document.getElementById("app-body").appendChild(newButton);
+            isSelected = suffix === aSelectedClassification.name;
         }
+        const node = generateClassificationItem(suffix, isSelected);
+        document.getElementById("classificationGroup").appendChild(node);
     }
-    else
-    {
-        for (const suffix of ListSuffix)
-        {
-            const node = generateClassificationItem(suffix, false);
-            document.getElementById("classificationGroup").appendChild(node);
-        }
-        const resetNode = clearClassificationItem(false);
-        document.getElementById("classificationGroup").appendChild(resetNode);
-    }
+    const resetNode = clearClassificationItem(clearSelected);
+    document.getElementById("classificationGroup").appendChild(resetNode);
 }
 
 async function getLabels()
@@ -172,7 +88,7 @@ function generateClassificationItem(itemText, itemIsChecked)
     const itemHTML =
     `<div class="ms-ChoiceField">
         <label class="ms-ChoiceField-field">
-            <input class="ms-ChoiceField-input" type="radio" name="classificationRadio" value="${itemText}" ${isChecked} onchange="propertyController.addCustomProperty(MetaPrefix, this.value);">
+            <input class="ms-ChoiceField-input" type="radio" name="classificationRadio" value="${itemText}" ${isChecked} onchange="classificationSelected(this.value);">
             <span class="ms-Label">${itemText}</span>
         </label>
     </div>`;
@@ -208,9 +124,10 @@ function clearClassificationItem(itemIsChecked)
     return node;
 }
 
-module.exports.init = init;
-module.exports.setDebug =
-(val) =>
+async function classificationSelected(aClassificationValue)
 {
-    isDebug = val;
-};
+    propertyController.addCustomProperty(MetaPrefix, aClassificationValue);
+}
+
+module.exports.init = init;
+module.exports.classificationSelected = classificationSelected;

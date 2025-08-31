@@ -1,6 +1,6 @@
 class Element
 {
-    constructor(id="")
+    constructor(id)
     {
         this.style = { display: "", };
         this.innerHTML = "";

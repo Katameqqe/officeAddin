@@ -1,10 +1,7 @@
-class WordCustomProp
+class WordCustomPropertyController
 {
-    constructor(userName, HostName, GUID)
+    constructor()
     {
-        this.userName = userName;
-        this.HostName = HostName;
-        this.GUID = GUID;
     }
 
     async addCustomProperty(name, value)
@@ -26,39 +23,23 @@ class WordCustomProp
             });
     }
 
-    async readCustomProperty(name)
+    async readCustomProperty(aName)
     {
         return Word.run(
             async (context) =>
             {
-                const customProps = context.document.properties.customProperties;
-                customProps.load("items");
+                const customProperties = context.document.properties.customProperties;
+                customProperties.load("items");
                 await context.sync();
 
-                const mainProp = customProps.items.find(item => item.key === name);
+                const result = CustomClassification.readByNameFromCustomProperties(aName, customProperties)
 
-                const classifiedBy = customProps.items.find(item => item.key === "ClassifiedBy");
-                const classificationHost = customProps.items.find(item => item.key === "ClassificationHost");
-                const classificationDate = customProps.items.find(item => item.key === "ClassificationDate");
-                const classificationGUID = customProps.items.find(item => item.key === "ClassificationGUID");
+                if (result == null)
+                {
+                    console.log(`One or more classification properties does not exist.`);
+                }
 
-                if (mainProp && classifiedBy && classificationHost && classificationDate && classificationGUID)
-                {
-                    return {
-                        [name]:             mainProp.value,
-                        ClassifiedBy:       classifiedBy.value,
-                        ClassificationHost: classificationHost.value,
-                        ClassificationDate: classificationDate.value,
-                        ClassificationGUID: classificationGUID.value
-                    };
-                }
-                else
-                {
-                    console.log(`One or more classification properties do not exist.`);
-                    return {
-                        [name]: null
-                    };
-                }
+                return result;
             });
     }
 
@@ -96,4 +77,4 @@ class WordCustomProp
     }
 }
 
-module.exports = WordCustomProp;
+module.exports = WordCustomPropertyController;
