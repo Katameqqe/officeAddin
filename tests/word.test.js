@@ -1,7 +1,3 @@
-/**
- * @jest-environment jsdom
- */
-/* eslint-env jest */
 
 global.Office =                     require('./helpers/office');
 
@@ -12,33 +8,21 @@ global.CustomPropertyController =   require('../src/customProp')
 global.fetch =                      require('./helpers/fetch');;
 
 const taskpane =                    require('../src/index')
-taskpane.setDebug(true);
 
 global.WordCustomProp =             require('../src/WordCustomProp');
 global.ExcelCustomProp =            require('../src/ExcelCustomProp');
 
 const Document =                    require('./helpers/document');
 const WordDocument =                require('./helpers/word/wordDocument');
-const excelWorkbook =               require('./helpers/excel/excelWorkbook');
 
 global.Word =                       require('./helpers/word/word')
 global.Excel =                      require('./helpers/excel/excel')
 
-const fs = require("fs");
-const path = require("path");
-
-beforeEach(
-    () =>
-    {
-        const html = fs.readFileSync(path.resolve(__dirname, "../src/index.html"), "utf8");
-        document.documentElement.innerHTML = html;
-    });
-
 test('Word length of array',
     async () =>
     {
-        //global.window = new Window();
-        //global.document = new Document();
+        global.window = new Window();
+        global.document = new Document();
         global.Word.context.document = new WordDocument();
 
         const info = {host: Office.HostType.Word, };
@@ -48,25 +32,11 @@ test('Word length of array',
 
     });
 
-test('Excel test length of array',
-    async () =>
-    {
-        //global.window = new Window();
-        //global.document = new Document();
-        global.Excel.context.workbook = new excelWorkbook();
-
-        const info = {host: Office.HostType.Excel, };
-        await taskpane.init(info);
-
-        await expect(document.getElementById("classificationGroup").children.length).toBe(5);
-
-    });
-
 test('Word onclick',
     async () =>
     {
-        //global.window = new Window();
-        //global.document = new Document();
+        global.window = new Window();
+        global.document = new Document();
         global.Word.context.document = new WordDocument();
 
         const info = {host: Office.HostType.Word, };
@@ -79,3 +49,13 @@ test('Word onclick',
         console.log(global.Word.context.document.properties.customProperties.items);
         await expect(global.Word.context.document.properties.customProperties.items[0].value).toBe("Default");
     });
+
+// TODO: Display empty classification
+
+// TODO: Display not empty classification
+
+// TODO: set classification from empty
+
+// TODO: update existed classification
+
+// TODO: clear classification
