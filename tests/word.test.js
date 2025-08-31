@@ -9,8 +9,8 @@ global.fetch =                      require('./helpers/fetch');;
 
 const taskpane =                    require('../src/index')
 
-global.WordCustomProp =             require('../src/WordCustomProp');
-global.ExcelCustomProp =            require('../src/ExcelCustomProp');
+global.WordCustomProp =             require('../src/WordCustomPropertyController');
+global.ExcelCustomProp =            require('../src/ExcelCustomPropertyController');
 
 const Document =                    require('./helpers/document');
 const WordDocument =                require('./helpers/word/wordDocument');

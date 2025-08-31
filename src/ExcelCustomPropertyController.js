@@ -1,4 +1,4 @@
-class ExcelCustomProp
+class ExcelCustomPropertyController
 {
     constructor(userName, HostName, GUID)
     {
@@ -43,19 +43,22 @@ class ExcelCustomProp
 
                 if (mainProp && classifiedBy && classificationHost && classificationDate && classificationGUID)
                 {
-                    return {
+
+                    return 
+                    {
                         [name]:             mainProp.value,
                         ClassifiedBy:       classifiedBy.value,
                         ClassificationHost: classificationHost.value,
                         ClassificationDate: classificationDate.value,
-                        ClassificationGUID: classificationGUID.value
+                        ClassificationGUID: classificationGUID.value,
                     };
                 }
                 else
                 {
                     console.log(`One or more classification properties do not exist.`);
-                    return {
-                        [name]: null
+                    return 
+                    {
+                        [name]: null,
                     };
                 }
             });

@@ -1,4 +1,4 @@
-class WordCustomProp
+class WordCustomPropertyController
 {
     constructor(userName, HostName, GUID)
     {
@@ -55,7 +55,8 @@ class WordCustomProp
                 else
                 {
                     console.log(`One or more classification properties do not exist.`);
-                    return {
+                    return 
+                    {
                         [name]: null
                     };
                 }
