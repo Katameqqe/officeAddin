@@ -1,66 +1,46 @@
+
 class ExcelCustomPropertyController
 {
-    constructor(userName, HostName, GUID)
+    constructor()
     {
-        this.userName = userName;
-        this.HostName = HostName;
-        this.GUID = GUID;
     }
+
     async addCustomProperty(name, value)
     {
         return Excel.run(
             async (context) =>
             {
-                const customProps = context.workbook.properties.custom;
-                customProps.load("items");
+                const customProperties = context.workbook.properties.custom;
+                customProperties.load("items");
                 await context.sync();
 
-                customProps.add(name, value);
-                customProps.add("ClassifiedBy", this.userName);
-                customProps.add("ClassificationHost", this.HostName);
-                customProps.add("ClassificationDate", new Date().toLocaleString());
-                customProps.add("ClassificationGUID", this.GUID);
+                customProperties.add(name, value);
+                customProperties.add("ClassifiedBy", this.userName);
+                customProperties.add("ClassificationHost", this.HostName);
+                customProperties.add("ClassificationDate", new Date().toLocaleString());
+                customProperties.add("ClassificationGUID", this.GUID);
                 await context.sync();
                 console.log(`Custom property "${name}" added with value: ${value}`);
             });
     }
 
-    async readCustomProperty(name)
+    async readCustomProperty(aName)
     {
         return Excel.run(
             async (context) =>
             {
-                const customProps = context.workbook.properties.custom;
-                customProps.load("items");
+                const customProperties = context.workbook.properties.custom;
+                customProperties.load("items");
                 await context.sync();
 
-                const mainProp = customProps.items.find(item => item.key === name);
+                const result = CustomClassification.readByNameFromCustomProperties(aName, customProperties)
 
-                const classifiedBy = customProps.items.find(item => item.key === "ClassifiedBy");
-                const classificationHost = customProps.items.find(item => item.key === "ClassificationHost");
-                const classificationDate = customProps.items.find(item => item.key === "ClassificationDate");
-                const classificationGUID = customProps.items.find(item => item.key === "ClassificationGUID");
-
-                if (mainProp && classifiedBy && classificationHost && classificationDate && classificationGUID)
+                if (result == null)
                 {
+                    console.log(`One or more classification properties does not exist.`);
+                }
 
-                    return 
-                    {
-                        [name]:             mainProp.value,
-                        ClassifiedBy:       classifiedBy.value,
-                        ClassificationHost: classificationHost.value,
-                        ClassificationDate: classificationDate.value,
-                        ClassificationGUID: classificationGUID.value,
-                    };
-                }
-                else
-                {
-                    console.log(`One or more classification properties do not exist.`);
-                    return 
-                    {
-                        [name]: null,
-                    };
-                }
+                return result;
             });
     }
 
@@ -98,4 +78,4 @@ class ExcelCustomPropertyController
     }
 }
 
-module.exports = ExcelCustomProp;
+module.exports = ExcelCustomPropertyController;

@@ -74,6 +74,7 @@ function readClassifButton(ListSuffix, prefix)
         document.getElementById("app-body").insertBefore(newButton, document.getElementById("NoLabel"));
     };
 }
+
 function readClassif(ListSuffix, suffix)
 {
     if (ListSuffix.includes(suffix))

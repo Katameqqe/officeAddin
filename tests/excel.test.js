@@ -3,13 +3,13 @@ global.Office =                     require('./helpers/office');
 
 const Window =                      require('./helpers/window')
 
-global.CustomPropertyController =   require('../src/CustomPropertyController')
+global.CustomPropertyController =   require('../src/customPropertyController')
 
 global.fetch =                      require('./helpers/fetch');;
 
 const taskpane =                    require('../src/index')
 
-global.ExcelCustomProp =            require('../src/ExcelCustomPropertyController');
+global.ExcelCustomProp =            require('../src/excelCustomPropertyController');
 
 const Document =                    require('./helpers/document');
 const excelWorkbook =               require('./helpers/excel/excelWorkbook');
