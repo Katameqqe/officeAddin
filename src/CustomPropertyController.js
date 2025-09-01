@@ -8,7 +8,7 @@ class CustomPropertyController
         }
         else if (aHost === Office.HostType.Excel)
         {
-            this.propertyController = new WordCustomPropertyController();
+            this.propertyController = new ExcelCustomPropertyController();
         }
         else if (aHost === Office.HostType.PowerPoint)
         {

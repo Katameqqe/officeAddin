@@ -1,23 +1,22 @@
 
 global.Office =                     require('./helpers/office');
 
-const Window =                      require('./helpers/window')
+const Window =                      require('./helpers/window');
 
-global.CustomPropertyController =   require('../src/CustomPropertyController')
-global.CustomClassification =       require('../src/customClassification')
+global.CustomPropertyController =   require('../src/CustomPropertyController');
+global.CustomClassification =       require('../src/customClassification');
 
-global.fetch =                      require('./helpers/fetch');;
+global.fetch =                      require('./helpers/fetch');
 
-const taskpane =                    require('../src/index')
+const taskpane =                    require('../src/index');
 
 global.WordCustomPropertyController = require('../src/WordCustomPropertyController');
 
 const Document =                    require('./helpers/document');
 const WordDocument =                require('./helpers/word/wordDocument');
-const CustomProperty = require('./helpers/customProperty');
+const CustomProperty =              require('./helpers/customProperty');
 
-global.Word =                       require('./helpers/word/word')
-global.Excel =                      require('./helpers/excel/excel')
+global.Word =                       require('./helpers/word/word');
 const info = {host: Office.HostType.Word, };
 
 beforeEach(() => {
@@ -26,7 +25,6 @@ beforeEach(() => {
     global.Word.context.document = new WordDocument();
 });
 
-// TODO: Display empty classification
 test('Word Display empty classification',
     async () =>
     {
@@ -36,7 +34,6 @@ test('Word Display empty classification',
         await expect(global.Word.context.document.properties.customProperties.items.length).toBe(0);
     });
 
-// TODO: Display not empty classification
 test('Word Display not empty classification',
     async () =>
     {
@@ -54,7 +51,6 @@ test('Word Display not empty classification',
         await expect(global.Word.context.document.properties.customProperties.items[0].value).toBe("Default");
     });
 
-// TODO: set classification from empty
 test('Word set classification from empty',
     async () =>
     {
@@ -68,7 +64,6 @@ test('Word set classification from empty',
         await expect(global.Word.context.document.properties.customProperties.items[0].value).toBe("Default");
     });
 
-// TODO: update existed classification
 test('Word update existed classification',
     async () =>
     {
@@ -92,7 +87,6 @@ test('Word update existed classification',
         await expect(global.Word.context.document.properties.customProperties.items[0].value).toBe("Restricted");
     });
 
-// TODO: clear classification
 test('Word clear classification',
     async () =>
     {

@@ -5,22 +5,19 @@ class ExcelCustomPropertyController
     {
     }
 
-    async addCustomProperty(name, value)
+    async addCustomProperty(classificationObj)
     {
         return Excel.run(
             async (context) =>
             {
-                const customProperties = context.workbook.properties.custom;
-                customProperties.load("items");
+                const customProps = context.workbook.properties.custom;
+                customProps.load("items");
                 await context.sync();
 
-                customProperties.add(name, value);
-                customProperties.add("ClassifiedBy", this.userName);
-                customProperties.add("ClassificationHost", this.HostName);
-                customProperties.add("ClassificationDate", new Date().toLocaleString());
-                customProperties.add("ClassificationGUID", this.GUID);
+                classificationObj.addClassificationInfo(customProps);
+
                 await context.sync();
-                console.log(`Custom property "${name}" added with value: ${value}`);
+                console.log(`Custom property "${JSON.stringify(classificationObj, null, 2)}" added.`);
             });
     }
 
@@ -29,11 +26,11 @@ class ExcelCustomPropertyController
         return Excel.run(
             async (context) =>
             {
-                const customProperties = context.workbook.properties.custom;
-                customProperties.load("items");
+                const customProps = context.workbook.properties.custom;
+                customProps.load("items");
                 await context.sync();
 
-                const result = CustomClassification.readByNameFromCustomProperties(aName, customProperties)
+                const result = CustomClassification.readByNameFromCustomProperties(aName, customProps)
 
                 if (result == null)
                 {
@@ -44,7 +41,7 @@ class ExcelCustomPropertyController
             });
     }
 
-    async removeCustomProperty(name)
+    async removeCustomProperty(aName)
     {
         return Excel.run(
             async (context) =>
@@ -53,26 +50,17 @@ class ExcelCustomPropertyController
                 customProps.load("items");
                 await context.sync();
 
-                const mainProp = customProps.items.find(item => item.key === name)
+                const classificationObj = CustomClassification.readByNameFromCustomProperties(aName, customProps);
 
-                const classifiedBy = customProps.items.find(item => item.key === "ClassifiedBy");
-                const classificationHost = customProps.items.find(item => item.key === "ClassificationHost");
-                const classificationDate = customProps.items.find(item => item.key === "ClassificationDate");
-                const classificationGUID = customProps.items.find(item => item.key === "ClassificationGUID");
-
-                if (mainProp && classifiedBy && classificationHost && classificationDate && classificationGUID)
+                if (classificationObj)
                 {
-                    mainProp.delete();
-                    classifiedBy.delete();
-                    classificationHost.delete();
-                    classificationDate.delete();
-                    classificationGUID.delete();
+                    CustomClassification.deleteFromCustomProperties(aName, customProps);
                     await context.sync();
-                    console.log(`Custom property "${name}" and related classification properties removed.`);
+                    console.log(`Custom property "${aName}" and related classification properties removed.`);
                 }
                 else
                 {
-                    console.log(`Custom property "${name}" does not exist.`);
+                    console.log(`Custom property "${aName}" does not exist.`);
                 }
             });
     }
