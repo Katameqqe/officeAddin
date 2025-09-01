@@ -3,14 +3,14 @@ global.Office =                     require('./helpers/office');
 
 const Window =                      require('./helpers/window')
 
-global.CustomPropertyController =   require('../src/customPropertyController')
+global.CustomPropertyController =   require('../src/CustomPropertyController')
 global.CustomClassification =       require('../src/customClassification')
 
 global.fetch =                      require('./helpers/fetch');;
 
 const taskpane =                    require('../src/index')
 
-global.WordCustomPropertyController = require('../src/wordCustomPropertyController');
+global.WordCustomPropertyController = require('../src/WordCustomPropertyController');
 
 const Document =                    require('./helpers/document');
 const WordDocument =                require('./helpers/word/wordDocument');

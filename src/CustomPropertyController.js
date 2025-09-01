@@ -21,9 +21,9 @@ class CustomPropertyController
         }
     }
 
-    async addCustomProperty(name, value)
+    async addCustomProperty(ClassificationObj)
     {
-        return this.propertyController.addCustomProperty(name, value);
+        return this.propertyController.addCustomProperty(ClassificationObj);
     }
 
     async readCustomProperty(name)

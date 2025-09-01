@@ -4,7 +4,7 @@ class WordCustomPropertyController
     {
     }
 
-    async addCustomProperty(name, value)
+    async addCustomProperty(classificationObj)
     {
         return Word.run(
             async (context) =>
@@ -13,13 +13,10 @@ class WordCustomPropertyController
                 customProps.load("items");
                 await context.sync();
 
-                customProps.add(name, value);
-                customProps.add("ClassifiedBy", this.userName);
-                customProps.add("ClassificationHost", this.HostName);
-                customProps.add("ClassificationDate", new Date().toLocaleString());
-                customProps.add("ClassificationGUID", this.GUID);
+                classificationObj.addClassificationInfo(customProps);
+
                 await context.sync();
-                console.log(`Custom property "${name}" added with value: ${value}`);
+                console.log(`Custom property "${JSON.stringify(classificationObj, null, 2)}" added.`);
             });
     }
 
@@ -43,7 +40,7 @@ class WordCustomPropertyController
             });
     }
 
-    async removeCustomProperty(name)
+    async removeCustomProperty(aName)
     {
         return Word.run(
             async (context) =>
@@ -52,26 +49,17 @@ class WordCustomPropertyController
                 customProps.load("items");
                 await context.sync();
 
-                const mainProp = customProps.items.find(item => item.key === name)
+                const classificationObj = CustomClassification.readByNameFromCustomProperties(aName, customProps);
 
-                const classifiedBy = customProps.items.find(item => item.key === "ClassifiedBy");
-                const classificationHost = customProps.items.find(item => item.key === "ClassificationHost");
-                const classificationDate = customProps.items.find(item => item.key === "ClassificationDate");
-                const classificationGUID = customProps.items.find(item => item.key === "ClassificationGUID");
-
-                if (mainProp && classifiedBy && classificationHost && classificationDate && classificationGUID)
+                if (classificationObj)
                 {
-                    mainProp.delete();
-                    classifiedBy.delete();
-                    classificationHost.delete();
-                    classificationDate.delete();
-                    classificationGUID.delete();
+                    CustomClassification.deleteFromCustomProperties(aName, customProps);
                     await context.sync();
-                    console.log(`Custom property "${name}" and related classification properties removed.`);
+                    console.log(`Custom property "${aName}" and related classification properties removed.`);
                 }
                 else
                 {
-                    console.log(`Custom property "${name}" does not exist.`);
+                    console.log(`Custom property "${aName}" does not exist.`);
                 }
             });
     }

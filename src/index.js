@@ -52,7 +52,7 @@ function createButtons(ListSuffix, aSelectedClassification)
         let isSelected = false;
         if (!clearSelected)
         {
-            isSelected = suffix === aSelectedClassification.name;
+            isSelected = suffix === aSelectedClassification.value;
         }
         const node = generateClassificationItem(suffix, isSelected);
         document.getElementById("classificationGroup").appendChild(node);
@@ -126,7 +126,8 @@ function clearClassificationItem(itemIsChecked)
 
 async function classificationSelected(aClassificationValue)
 {
-    propertyController.addCustomProperty(MetaPrefix, aClassificationValue);
+    let classificationObject = new CustomClassification(MetaPrefix, aClassificationValue, userName, HostName, GUID);
+    propertyController.addCustomProperty(classificationObject);
 }
 
 module.exports.init = init;

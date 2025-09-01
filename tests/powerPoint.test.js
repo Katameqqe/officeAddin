@@ -3,7 +3,7 @@ global.Office =                     require('./helpers/office');
 
 const Window =                      require('./helpers/window')
 
-global.CustomPropertyController =   require('../src/customPropertyController')
+global.CustomPropertyController =   require('../src/CustomPropertyController')
 
 global.fetch =                      require('./helpers/fetch');;
 
