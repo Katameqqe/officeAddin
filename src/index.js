@@ -112,7 +112,7 @@ function clearClassificationItem(itemIsChecked)
     <hr/>
     <div class="ms-ChoiceField">
         <label for="_clear_classification_" class="ms-ChoiceField-field">
-            <input id="_clear_classification_" class="ms-ChoiceField-input" type="radio" name="classificationRadio" ${isChecked} onchange="propertyController.removeCustomProperty(MetaPrefix)">
+            <input id="_clear_classification_" class="ms-ChoiceField-input" type="radio" name="classificationRadio" ${isChecked} onchange="removeClassification();">
             <span class="ms-Label">Not classified</span>
         </label>
     </div>`;
@@ -130,5 +130,11 @@ async function classificationSelected(aClassificationValue)
     propertyController.addCustomProperty(classificationObject);
 }
 
+async function removeClassification()
+{
+    propertyController.removeCustomProperty(MetaPrefix);
+}
+
 module.exports.init = init;
 module.exports.classificationSelected = classificationSelected;
+module.exports.removeClassification = removeClassification;

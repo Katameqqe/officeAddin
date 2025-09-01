@@ -13,7 +13,7 @@ class CustomProperties
         for (let i = 0; i < this.items.length; i++)
         {
             let customProperty = this.items[i];
-            if (customProperty.name === aName)
+            if (customProperty.key === aName)
             {
                 result = customProperty;
             }
@@ -23,8 +23,19 @@ class CustomProperties
 
     add(aName, aValue)
     {
-        this.items.push(new CustomProperty(aName, aValue))
+        if (this.getItemOrNullObject(aName).isNullObject)
+        {
+            this.items.push(new CustomProperty(aName, aValue))
+        }
+        else
+        {
+            this.getItemOrNullObject(aName).set(
+                {
+                    value: aValue, 
+                });
+        }
     }
+        
 
     load()
     {
@@ -43,6 +54,20 @@ class CustomProperties
             }
         }
         this.items = newItems;
+    }
+
+    find(aFunc)
+    {
+        for (let i = 0; i < this.items.length; i++)
+        {
+            const item = this.items[i];
+            const res = aFunc(item);
+            if (res)
+            {
+                return item;
+            }
+        }
+        return null;
     }
 }
 module.exports = CustomProperties;

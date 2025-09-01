@@ -2,7 +2,7 @@ class CustomProperty
 {
     constructor(aName, aValue)
     {
-        this.name = aName;
+        this.key = aName;
         this.value = aValue;
         this.isNullObject = false;
         this.toDelete = false;

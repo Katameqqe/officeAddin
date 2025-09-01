@@ -25,11 +25,11 @@ class WordCustomPropertyController
         return Word.run(
             async (context) =>
             {
-                const customProperties = context.document.properties.customProperties;
-                customProperties.load("items");
+                const customProps = context.document.properties.customProperties;
+                customProps.load("items");
                 await context.sync();
 
-                const result = CustomClassification.readByNameFromCustomProperties(aName, customProperties)
+                const result = CustomClassification.readByNameFromCustomProperties(aName, customProps)
 
                 if (result == null)
                 {
