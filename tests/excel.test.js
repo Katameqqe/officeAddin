@@ -10,7 +10,7 @@ global.fetch =                      require('./helpers/fetch');
 
 const taskpane =                    require('../src/index');
 
-global.ExcelCustomPropertyController = require('../src/excelCustomPropertyController');
+global.ExcelCustomPropertyController = require('../src/ExcelCustomPropertyController');
 
 const Document =                    require('./helpers/document');
 const ExcelWorkbook =               require('./helpers/excel/excelWorkbook');

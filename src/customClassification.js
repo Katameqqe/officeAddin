@@ -19,8 +19,42 @@ class CustomClassification
             mainProp.value,
             classifiedBy.value,
             classificationHost.value,
+            classificationDate.value,
             classificationGUID.value
         );
+    }
+
+    static async readByNameFromCustomXmlParts(aName, aCustomXmlParts)
+    {
+        if (aCustomXmlParts.items.length === 0)
+        {
+            return null;
+        }
+
+        for (const part of aCustomXmlParts.items)
+        {
+            const xml = part.getXml();
+            await part.context.sync();
+
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xml.value, "application/xml");
+
+            const propName = xmlDoc.querySelector("customPropName")?.textContent;
+            if (propName === aName)
+            {
+                return {
+                    value: xmlDoc.querySelector("attrValue")?.textContent ?? "",
+                    name: propName,
+                    classificationDate: xmlDoc.querySelector("timestamp")?.textContent ?? "",
+                    classifiedBy: xmlDoc.querySelector("userName")?.textContent ?? "",
+                    classificationHost: xmlDoc.querySelector("computerName")?.textContent ?? "",
+                    classificationGUID: xmlDoc.querySelector("guid")?.textContent ?? "",
+                    id: part.id,
+                };
+            }
+        }
+
+        return null;
     }
 
     addClassificationInfo(customProperties)
@@ -31,6 +65,21 @@ class CustomClassification
         customProperties.add("ClassificationDate", this.classificationDate);
         customProperties.add("ClassificationGUID", this.classificationGUID);
     }
+
+
+
+    toXmlString()
+    {
+        return `<GTBClassification>
+    <attrValue xml:space="preserve">${this.value}</attrValue>
+    <customPropName>${this.name}</customPropName>
+    <timestamp>${this.classificationDate}</timestamp>
+    <userName>${this.classifiedBy}</userName>
+    <computerName>${this.classificationHost}</computerName>
+    <guid>${this.classificationGUID}</guid>
+</GTBClassification>`;
+    }
+
 
     static deleteFromCustomProperties(aName, customProps)
     {
@@ -51,14 +100,15 @@ class CustomClassification
             }
         }
     }
+    
 
-    constructor(aName, aValue, aUserName, aHostName, aGUID)
+    constructor(aName, aValue, aUserName, aHostName, aDate = new Date().toLocaleString(), aGUID)
     {
         this.name = aName;
         this.value = aValue;
         this.classifiedBy = aUserName;
         this.classificationHost = aHostName;
-        this.classificationDate = new Date().toLocaleString();
+        this.classificationDate = aDate;
         this.classificationGUID = aGUID;
     }
 

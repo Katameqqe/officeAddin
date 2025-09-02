@@ -1,4 +1,3 @@
-
 const MetaPrefix = "Classification";
 const address = "https://192.168.128.4:443/list"
 const HostName = "GTB.test.com";
@@ -6,6 +5,7 @@ const userName = "USERRR";
 const GUID = "{123e4567-e89b-12d3-a456-426614174000}";
 
 let propertyController = null;
+let a = null;
 
 Office.onReady(
     async (info) =>
@@ -34,6 +34,7 @@ async function init(info)
     }
 
     propertyController = new CustomPropertyController(info.host);
+    //a = new WordCustomXMLController();
 
     const ListSuffix = await getLabels();
 
@@ -126,13 +127,15 @@ function clearClassificationItem(itemIsChecked)
 
 async function classificationSelected(aClassificationValue)
 {
-    let classificationObject = new CustomClassification(MetaPrefix, aClassificationValue, userName, HostName, GUID);
+    let classificationObject = new CustomClassification(MetaPrefix, aClassificationValue, userName, HostName,new Date().toLocaleString(),GUID);
+    //a.addCustomProperty(classificationObject);
     propertyController.addCustomProperty(classificationObject);
 }
 
 async function removeClassification()
 {
     propertyController.removeCustomProperty(MetaPrefix);
+    //await a.removeCustomProperty(MetaPrefix);
 }
 
 module.exports.init = init;
