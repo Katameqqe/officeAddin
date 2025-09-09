@@ -63,5 +63,4 @@ class WordCustomXMLController
                 await context.sync();
             });
     }
-
 }

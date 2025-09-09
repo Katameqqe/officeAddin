@@ -28,6 +28,8 @@ export default
                 WordCustomPropertyController: "readonly",
                 ExcelCustomPropertyController: "readonly",
                 CustomClassification: "readonly",
+                DOMParser: "readonly",
+                beforeEach: "readonly",
             },
         },
     },

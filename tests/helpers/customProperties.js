@@ -31,11 +31,10 @@ class CustomProperties
         {
             this.getItemOrNullObject(aName).set(
                 {
-                    value: aValue, 
+                    value: aValue,
                 });
         }
     }
-        
 
     load()
     {

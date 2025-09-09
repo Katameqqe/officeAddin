@@ -66,20 +66,18 @@ class CustomClassification
         customProperties.add("ClassificationGUID", this.classificationGUID);
     }
 
-
-
     toXmlString()
     {
-        return `<GTBClassification>
-    <attrValue xml:space="preserve">${this.value}</attrValue>
-    <customPropName>${this.name}</customPropName>
-    <timestamp>${this.classificationDate}</timestamp>
-    <userName>${this.classifiedBy}</userName>
-    <computerName>${this.classificationHost}</computerName>
-    <guid>${this.classificationGUID}</guid>
-</GTBClassification>`;
+        return `
+            <GTBClassification>
+                <attrValue xml:space="preserve">${this.value}</attrValue>
+                <customPropName>${this.name}</customPropName>
+                <timestamp>${this.classificationDate}</timestamp>
+                <userName>${this.classifiedBy}</userName>
+                <computerName>${this.classificationHost}</computerName>
+                <guid>${this.classificationGUID}</guid>
+            </GTBClassification>`;
     }
-
 
     static deleteFromCustomProperties(aName, customProps)
     {
@@ -89,7 +87,7 @@ class CustomClassification
             "ClassifiedBy",
             "ClassificationHost",
             "ClassificationDate",
-            "ClassificationGUID"
+            "ClassificationGUID",
         ];
         for (const key of keysToRemove)
         {
@@ -100,7 +98,6 @@ class CustomClassification
             }
         }
     }
-    
 
     constructor(aName, aValue, aUserName, aHostName, aDate = new Date().toLocaleString(), aGUID)
     {
@@ -111,6 +108,5 @@ class CustomClassification
         this.classificationDate = aDate;
         this.classificationGUID = aGUID;
     }
-
 }
 module.exports = CustomClassification;
