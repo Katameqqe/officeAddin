@@ -1,0 +1,7 @@
+npm install office-addin-dev-certs -D
+
+npx office-addin-dev-certs install
+
+Connection must be trusted
+
+npx http-server ./src -S --ssl -C /Users/danilkorotenko/.office-addin-dev-certs/localhost.crt -K /Users/danilkorotenko/.office-addin-dev-certs/localhost.key  --cors
