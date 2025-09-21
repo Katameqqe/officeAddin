@@ -19,11 +19,13 @@ const CustomProperty =              require('./helpers/customProperty');
 global.Word =                       require('./helpers/word/word');
 const info = {host: Office.HostType.Word, };
 
-beforeEach(() => {
-    global.window = new Window();
-    global.document = new Document();
-    global.Word.context.document = new WordDocument();
-});
+beforeEach(
+    () =>
+    {
+        global.window = new Window();
+        global.document = new Document();
+        global.Word.context.document = new WordDocument();
+    });
 
 test('Word Display empty classification',
     async () =>
@@ -76,11 +78,11 @@ test('Word update existed classification',
             new CustomProperty("ClassificationGUID", "GUID"),
         ];
         await taskpane.init(info);
-        
+
         await expect(document.getElementById("classificationGroup").children.length).toBe(5);
         await expect(global.Word.context.document.properties.customProperties.items.length).toBe(5);
         await expect(global.Word.context.document.properties.customProperties.items[0].value).toBe("Default");
-        
+
         await taskpane.classificationSelected("Restricted");
 
         await expect(global.Word.context.document.properties.customProperties.items.length).toBe(5);
@@ -102,8 +104,8 @@ test('Word clear classification',
         await expect(document.getElementById("classificationGroup").children.length).toBe(5);
         await expect(global.Word.context.document.properties.customProperties.items.length).toBe(5);
         await expect(global.Word.context.document.properties.customProperties.items[0].value).toBe("Default");
-        
+
         await taskpane.removeClassification();
-        
+
         await expect(global.Word.context.document.properties.customProperties.items.length).toBe(0);
     });

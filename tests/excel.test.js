@@ -19,11 +19,13 @@ const CustomProperty =              require('./helpers/customProperty');
 global.Excel =                      require('./helpers/excel/excel');
 const info = {host: Office.HostType.Excel, };
 
-beforeEach(() => {
-    global.window = new Window();
-    global.document = new Document();
-    global.Excel.context.workbook = new ExcelWorkbook();
-});
+beforeEach(
+    () =>
+    {
+        global.window = new Window();
+        global.document = new Document();
+        global.Excel.context.workbook = new ExcelWorkbook();
+    });
 
 test('Excel Display empty classification',
     async () =>
@@ -76,11 +78,11 @@ test('Excel update existed classification',
             new CustomProperty("ClassificationGUID", "GUID"),
         ];
         await taskpane.init(info);
-        
+
         await expect(document.getElementById("classificationGroup").children.length).toBe(5);
         await expect(global.Excel.context.workbook.properties.custom.items.length).toBe(5);
         await expect(global.Excel.context.workbook.properties.custom.items[0].value).toBe("Default");
-        
+
         await taskpane.classificationSelected("Restricted");
 
         await expect(global.Excel.context.workbook.properties.custom.items.length).toBe(5);
@@ -102,8 +104,8 @@ test('Excel clear classification',
         await expect(document.getElementById("classificationGroup").children.length).toBe(5);
         await expect(global.Excel.context.workbook.properties.custom.items.length).toBe(5);
         await expect(global.Excel.context.workbook.properties.custom.items[0].value).toBe("Default");
-        
+
         await taskpane.removeClassification();
-        
+
         await expect(global.Excel.context.workbook.properties.custom.items.length).toBe(0);
     });
