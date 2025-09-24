@@ -33,7 +33,7 @@ async function init(info)
     }
 
     propertyController = new CustomPropertyController(info.host);
-    //a = new WordCustomXMLController();
+    a = new WordCustomXMLController();
 
     const ListSuffix = await getLabels();
 
@@ -127,14 +127,14 @@ function clearClassificationItem(itemIsChecked)
 async function classificationSelected(aClassificationValue)
 {
     let classificationObject = new CustomClassification(MetaPrefix, aClassificationValue, userName, HostName,new Date().toLocaleString(),GUID);
-    //a.addCustomProperty(classificationObject);
+    a.addCustomProperty(classificationObject);
     propertyController.addCustomProperty(classificationObject);
 }
 
 async function removeClassification()
 {
     propertyController.removeCustomProperty(MetaPrefix);
-    //await a.removeCustomProperty(MetaPrefix);
+    await a.removeCustomProperty(MetaPrefix);
 }
 
 module.exports.init = init;

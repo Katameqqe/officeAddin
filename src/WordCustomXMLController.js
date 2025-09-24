@@ -19,7 +19,10 @@ class WordCustomXMLController
                     console.log(`Custom property XML "${classificationObj.name}" already exists.`);
                     xmlParts.getItem(obj.id).delete();
                 }
-                const xmlString = classificationObj.toXmlString();
+
+                const FontArr = [{ fontName: "Arial", fontColor: "000000", fontSize: "14", text: "Sample Watermark" }, { fontName: "Verdana", fontColor: "FF0000", fontSize: "12", text: "Second Line" }];
+                const wmObj = { fontName: "Arial", fontColor: "000000", fontSize: "36", rotation: "315", transparency: "0.5", text: classificationObj.value };
+                const xmlString = classificationObj.toXmlString(FontArr, FontArr, wmObj);
 
                 xmlParts.add(xmlString);
                 await context.sync();
