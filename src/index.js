@@ -1,10 +1,12 @@
 const MetaPrefix = "Classification";
-const address = "https://192.168.128.4:443/list"
+const address = "https://192.168.128.4:443"
 const HostName = "GTB.test.com";
 const userName = "USERRR";
 const GUID = "{123e4567-e89b-12d3-a456-426614174000}";
 
+let classifLabels = null
 let propertyController = null;
+let XMLController = null;
 
 Office.onReady(
     async (info) =>
@@ -33,9 +35,11 @@ async function init(info)
     }
 
     propertyController = new CustomPropertyController(info.host);
-    a = new WordCustomXMLController();
+    XMLController = new CustomXMLController(info.host);
 
     const ListSuffix = await getLabels();
+    classifLabels = await getClassifLabels();
+
 
     // We better get classification from document before. And then "createButtons" with selected classification
     const classification = await propertyController.readCustomProperty(MetaPrefix);
@@ -63,7 +67,7 @@ function createButtons(ListSuffix, aSelectedClassification)
 
 async function getLabels()
 {
-    const List = await fetch(address)
+    const List = await fetch(`${address}/list`)
         .then(res => res.json())
         .then(resJson => resJson.names)
         .catch(
@@ -71,6 +75,47 @@ async function getLabels()
             {
                 console.error("Error fetching suffix list:", err);
                 return ["Document", "Default", "Restricted", "Protected",];
+            });
+
+    console.log(JSON.stringify(List,null,2));
+    return List;
+}
+
+async function getClassifLabels()
+{
+    const List = await fetch(`${address}/classiflist`)
+        .then(res => res.json())
+        .then(resJson => resJson)
+        .catch(
+            err =>
+            {
+                console.error("Error fetching suffix list:", err);
+                return {
+                    "hdr": [
+                            {
+                                "fontName": "Arial",
+                                "fontColor": "000000",
+                                "fontSize": "14",
+                                "text": "Sample Watermark"
+                            },
+                        ],
+                    "ftr": [
+                            {
+                                "fontName": "Verdana",
+                                "fontColor": "FF0000",
+                                "fontSize": "12",
+                                "text": "Second Line"
+                            },
+                        ],
+                    "wm": {
+                        "fontName": "Arial",
+                        "fontColor": "000000",
+                        "fontSize": "36",
+                        "rotation": "315",
+                        "transparency": "0.5",
+                        "text": "Confidential"
+                    }
+                };
             });
 
     console.log(JSON.stringify(List,null,2));
@@ -127,14 +172,14 @@ function clearClassificationItem(itemIsChecked)
 async function classificationSelected(aClassificationValue)
 {
     let classificationObject = new CustomClassification(MetaPrefix, aClassificationValue, userName, HostName,new Date().toLocaleString(),GUID);
-    a.addCustomProperty(classificationObject);
+    XMLController.addCustomProperty(classificationObject, classifLabels);
     propertyController.addCustomProperty(classificationObject);
 }
 
 async function removeClassification()
 {
-    propertyController.removeCustomProperty(MetaPrefix);
-    await a.removeCustomProperty(MetaPrefix);
+    await propertyController.removeCustomProperty(MetaPrefix);
+    await XMLController.removeCustomProperty(MetaPrefix);
 }
 
 module.exports.init = init;
