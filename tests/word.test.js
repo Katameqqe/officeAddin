@@ -19,6 +19,8 @@ const CustomProperty =              require('./helpers/customProperty');
 global.Word =                       require('./helpers/word/word');
 const info = {host: Office.HostType.Word, };
 
+// TODO: implement tests
+
 beforeEach(
     () =>
     {

@@ -89,32 +89,41 @@ async function getClassifLabels()
         .catch(
             err =>
             {
+                // TODO: function name get classification labels, but in log "suffix".
+                // What do we get or fetch? suffixes?
                 console.error("Error fetching suffix list:", err);
+
+                // TODO: It is bad practice to return such long something.
+                // Move it to object, give it a name. What is it? Do we really need it?
+                // If you have something default such long - move it to separate file.
                 return {
-                    "hdr": [
-                            {
-                                "fontName": "Arial",
-                                "fontColor": "000000",
-                                "fontSize": "14",
-                                "text": "Sample Watermark"
-                            },
-                        ],
-                    "ftr": [
-                            {
-                                "fontName": "Verdana",
-                                "fontColor": "FF0000",
-                                "fontSize": "12",
-                                "text": "Second Line"
-                            },
-                        ],
-                    "wm": {
+                    "hdr":
+                    [
+                        {
+                            "fontName": "Arial",
+                            "fontColor": "000000",
+                            "fontSize": "14",
+                            "text": "Sample Watermark",
+                        },
+                    ],
+                    "ftr":
+                    [
+                        {
+                            "fontName": "Verdana",
+                            "fontColor": "FF0000",
+                            "fontSize": "12",
+                            "text": "Second Line",
+                        },
+                    ],
+                    "wm":
+                    {
                         "fontName": "Arial",
                         "fontColor": "000000",
                         "fontSize": "36",
                         "rotation": "315",
                         "transparency": "0.5",
-                        "text": "Confidential"
-                    }
+                        "text": "Confidential",
+                    },
                 };
             });
 
