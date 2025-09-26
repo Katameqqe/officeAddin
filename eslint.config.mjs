@@ -30,6 +30,8 @@ export default
                 CustomClassification: "readonly",
                 DOMParser: "readonly",
                 beforeEach: "readonly",
+                WordCustomXMLController: "readonly",
+                CustomXMLController: "readonly",
             },
         },
     },

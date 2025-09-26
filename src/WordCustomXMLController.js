@@ -1,3 +1,4 @@
+
 class WordCustomXMLController
 {
     constructor()
@@ -19,7 +20,7 @@ class WordCustomXMLController
                     console.log(`Custom property XML "${classificationObj.name}" already exists.`);
                     xmlParts.getItem(obj.id).delete();
                 }
-                
+
                 const xmlString = classificationObj.toXmlString(classifLabels.hdr, classifLabels.ftr, classifLabels.wm);
 
                 xmlParts.add(xmlString);
@@ -27,6 +28,7 @@ class WordCustomXMLController
                 console.log(`Custom XML part "${JSON.stringify(classificationObj, null, 2)}" added.`);
             });
     }
+
     async readCustomProperty(aName)
     {
         return Word.run(
