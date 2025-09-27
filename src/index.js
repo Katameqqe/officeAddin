@@ -67,7 +67,7 @@ function createButtons(ListSuffix, aSelectedClassification)
 
 async function getLabels()
 {
-    const List = await fetch(`${address}/list`)
+    const List = await fetch(`${address}/api/v1/classification-labels`)
         .then(res => res.json())
         .then(resJson => resJson.names)
         .catch(
@@ -83,7 +83,7 @@ async function getLabels()
 
 async function getClassifLabels()
 {
-    const List = await fetch(`${address}/classiflist`)
+    const List = await fetch(`${address}/api/v1/xml-fonts`)
         .then(res => res.json())
         .then(resJson => resJson)
         .catch(
@@ -96,35 +96,7 @@ async function getClassifLabels()
                 // TODO: It is bad practice to return such long something.
                 // Move it to object, give it a name. What is it? Do we really need it?
                 // If you have something default such long - move it to separate file.
-                return {
-                    "hdr":
-                    [
-                        {
-                            "fontName": "Arial",
-                            "fontColor": "000000",
-                            "fontSize": "14",
-                            "text": "Sample Watermark",
-                        },
-                    ],
-                    "ftr":
-                    [
-                        {
-                            "fontName": "Verdana",
-                            "fontColor": "FF0000",
-                            "fontSize": "12",
-                            "text": "Second Line",
-                        },
-                    ],
-                    "wm":
-                    {
-                        "fontName": "Arial",
-                        "fontColor": "000000",
-                        "fontSize": "36",
-                        "rotation": "315",
-                        "transparency": "0.5",
-                        "text": "Confidential",
-                    },
-                };
+                return defaultClassificationFont;
             });
 
     console.log(JSON.stringify(List,null,2));
