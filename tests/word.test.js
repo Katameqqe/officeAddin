@@ -5,12 +5,14 @@ const Window =                      require('./helpers/window');
 
 global.CustomPropertyController =   require('../src/CustomPropertyController');
 global.CustomClassification =       require('../src/customClassification');
+global.CustomXMLController =        require('../src/CustomXMLController');
 
 global.fetch =                      require('./helpers/fetch');
 
 const taskpane =                    require('../src/index');
 
 global.WordCustomPropertyController = require('../src/WordCustomPropertyController');
+global.WordCustomXMLController =    require('../src/WordCustomXMLController');
 
 const Document =                    require('./helpers/document');
 const WordDocument =                require('./helpers/word/wordDocument');

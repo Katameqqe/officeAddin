@@ -5,6 +5,7 @@ class WordCustomXMLController
     {
     }
 
+    // TODO: classifLabels in plural form, but it  uses as a single object. What is it? Is it a single object or an array of objects?
     async addCustomProperty(classificationObj, classifLabels)
     {
         return Word.run(
@@ -67,3 +68,5 @@ class WordCustomXMLController
             });
     }
 }
+
+module.exports = WordCustomXMLController;

@@ -32,6 +32,7 @@ export default
                 beforeEach: "readonly",
                 WordCustomXMLController: "readonly",
                 CustomXMLController: "readonly",
+                defaultClassificationFont: "readonly",
             },
         },
     },

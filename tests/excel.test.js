@@ -5,6 +5,7 @@ const Window =                      require('./helpers/window');
 
 global.CustomPropertyController =   require('../src/CustomPropertyController');
 global.CustomClassification =       require('../src/customClassification');
+global.CustomXMLController =        require('../src/CustomXMLController');
 
 global.fetch =                      require('./helpers/fetch');
 
