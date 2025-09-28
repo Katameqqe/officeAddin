@@ -65,6 +65,7 @@ function createButtons(ListSuffix, aSelectedClassification)
     document.getElementById("classificationGroup").appendChild(resetNode);
 }
 
+// TODO: the function name "getLabels", but the api name is "list", function name and api name should be same.
 async function getLabels()
 {
     const List = await fetch(`${address}/api/v1/classification-labels`)

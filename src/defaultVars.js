@@ -1,4 +1,4 @@
-const defaultClassificationFont = 
+const defaultClassificationFont =
 {
     "hdr":
         [
