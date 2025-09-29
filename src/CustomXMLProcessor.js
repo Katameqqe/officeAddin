@@ -1,12 +1,13 @@
 class CustomXMLProcessor
 {
-    constructor()
+    constructor(documentType)
     {
+        this.documentType = documentType;
     }
 
     async addCustomProperty(context, classificationObj)
     {
-        const xmlParts = context.customXmlParts;
+        const xmlParts = context[this.documentType].customXmlParts;
         context.load(xmlParts, "items");
         await context.sync();
 
@@ -28,9 +29,10 @@ class CustomXMLProcessor
 
     async readCustomProperty(context, aName)
     {
-        const xmlParts = context.customXmlParts;
+        const xmlParts = context[this.documentType].customXmlParts;
         context.load(xmlParts, "items");
         await context.sync();
+        console.log(xmlParts.items[3].getXml());
         const result = await CustomClassification.readByNameFromCustomXmlParts(aName, xmlParts)
         if (result == null)
         {
@@ -41,7 +43,7 @@ class CustomXMLProcessor
 
     async removeCustomProperty(context, aName)
     {
-        const xmlParts = context.customXmlParts;
+        const xmlParts = context[this.documentType].customXmlParts;
         context.load(xmlParts, "items");
         await context.sync();
         const classificationObj = await CustomClassification.readByNameFromCustomXmlParts(aName, xmlParts);

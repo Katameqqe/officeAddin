@@ -5,12 +5,12 @@ class CustomXMLController
         this.XMLcontroller = new CustomXMLProcessor();
         if (aHost === Office.HostType.Word)
         {
-            this.contextType = "document";
+            this.XMLcontroller.documentType = "document";
             this.platform = Word;
         }
         else if (aHost === Office.HostType.Excel)
         {
-            this.contextType = "workbook";
+            this.XMLcontroller.documentType = "workbook";
             this.platform = Excel;
         }
         else if (aHost === Office.HostType.PowerPoint)
@@ -26,17 +26,17 @@ class CustomXMLController
 
     async addCustomProperty(ClassificationObj)
     {
-        return this.platform.run(async (context) => {this.XMLcontroller.addCustomProperty(context[this.contextType], ClassificationObj)});
+        return this.platform.run(async (context) => {this.XMLcontroller.addCustomProperty(context, ClassificationObj)});
     }
 
     async readCustomProperty(name)
     {
-        return this.platform.run(async (context) => {this.XMLcontroller.readCustomProperty(context[this.contextType], name)});
+        return this.platform.run(async (context) => {this.XMLcontroller.readCustomProperty(context, name)});
     }
 
     async removeCustomProperty(value)
     {
-        return this.platform.run(async (context) => {this.XMLcontroller.removeCustomProperty(context[this.contextType], value)});
+        return this.platform.run(async (context) => {this.XMLcontroller.removeCustomProperty(context, value)});
     };
 
 }

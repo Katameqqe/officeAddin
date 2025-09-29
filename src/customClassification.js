@@ -34,7 +34,7 @@ class CustomClassification
         for (const part of aCustomXmlParts.items)
         {
             const xml = part.getXml();
-            await aCustomXmlParts.sync();
+            await part.context.sync();
 
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(xml.value, "application/xml");
@@ -77,6 +77,10 @@ class CustomClassification
     <text xml:space="preserve">${text}</text>
 </r>`;
         }
+        function addTwoTabsToEachLine(str) {
+            return str.replace(/^/gm, '        ');
+        }
+
         const hdrBlocks = hdrArr.map(obj =>
             createR(obj.fontName, obj.fontColor, obj.fontSize, obj.text)
         ).join('\n');
@@ -90,11 +94,9 @@ class CustomClassification
     <userName>${this.classifiedBy}</userName>
     <computerName>${this.classificationHost}</computerName>
     <guid>${this.classificationGUID}</guid>
-    <hdr>
-        ${hdrBlocks}
+    <hdr>${`\n` + addTwoTabsToEachLine(hdrBlocks)}
     </hdr>
-    <ftr>
-        ${ftrBlocks}
+    <ftr>${`\n` + addTwoTabsToEachLine(ftrBlocks)}
     </ftr>
     <wm>
         <fontName>${wmObj.fontName}</fontName>
