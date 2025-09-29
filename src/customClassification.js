@@ -34,21 +34,20 @@ class CustomClassification
         for (const part of aCustomXmlParts.items)
         {
             const xml = part.getXml();
-            await part.context.sync();
+            await aCustomXmlParts.sync();
 
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(xml.value, "application/xml");
 
-            const propName = xmlDoc.querySelector("customPropName")?.textContent;
-            if (propName === aName)
-            {
+            const propName = xmlDoc.getElementsByTagName("customPropName")[0]?.textContent;
+            if (propName === aName) {
                 return {
-                    value: xmlDoc.querySelector("attrValue")?.textContent ?? "",
+                    value: xmlDoc.getElementsByTagName("attrValue")[0]?.textContent ?? "",
                     name: propName,
-                    classificationDate: xmlDoc.querySelector("timestamp")?.textContent ?? "",
-                    classifiedBy: xmlDoc.querySelector("userName")?.textContent ?? "",
-                    classificationHost: xmlDoc.querySelector("computerName")?.textContent ?? "",
-                    classificationGUID: xmlDoc.querySelector("guid")?.textContent ?? "",
+                    classificationDate: xmlDoc.getElementsByTagName("timestamp")[0]?.textContent ?? "",
+                    classifiedBy: xmlDoc.getElementsByTagName("userName")[0]?.textContent ?? "",
+                    classificationHost: xmlDoc.getElementsByTagName("computerName")[0]?.textContent ?? "",
+                    classificationGUID: xmlDoc.getElementsByTagName("guid")[0]?.textContent ?? "",
                     id: part.id,
                 };
             }
@@ -70,14 +69,13 @@ class CustomClassification
     {
         function createR(fontName, fontColor, fontSize, text)
         {
-            return `
-            <r>
-                <fontName>${fontName}</fontName>
-                <fontColor>${fontColor}</fontColor>
-                <fontSize>${fontSize}</fontSize>
-                <b/>
-                <text xml:space="preserve">${text}</text>
-            </r>`;
+            return `<r>
+    <fontName>${fontName}</fontName>
+    <fontColor>${fontColor}</fontColor>
+    <fontSize>${fontSize}</fontSize>
+    <b/>
+    <text xml:space="preserve">${text}</text>
+</r>`;
         }
         const hdrBlocks = hdrArr.map(obj =>
             createR(obj.fontName, obj.fontColor, obj.fontSize, obj.text)
@@ -85,30 +83,29 @@ class CustomClassification
         const ftrBlocks = ftrArr.map(obj =>
             createR(obj.fontName, obj.fontColor, obj.fontSize, obj.text)
         ).join('\n');
-        return `
-            <GTBClassification>
-                <attrValue xml:space="preserve">${this.value}</attrValue>
-                <customPropName>${this.name}</customPropName>
-                <timestamp>${this.classificationDate}</timestamp>
-                <userName>${this.classifiedBy}</userName>
-                <computerName>${this.classificationHost}</computerName>
-                <guid>${this.classificationGUID}</guid>
-                <hdr>
-                    ${hdrBlocks}
-                </hdr>
-                <ftr>
-                    ${ftrBlocks}
-                </ftr>
-                <wm>
-                    <fontName>${wmObj.fontName}</fontName>
-                    <fontColor>${wmObj.fontColor}</fontColor>
-                    <fontSize>${wmObj.fontSize}</fontSize>
-                    <b/>
-                    <rotation>${wmObj.rotation}</rotation>
-                    <transparency>${wmObj.transparency}</transparency>
-                    <text xml:space="preserve">${wmObj.text}</text>
-                </wm>
-            </GTBClassification>`;
+        return `<GTBClassification>
+    <attrValue xml:space="preserve">${this.value}</attrValue>
+    <customPropName>${this.name}</customPropName>
+    <timestamp>${this.classificationDate}</timestamp>
+    <userName>${this.classifiedBy}</userName>
+    <computerName>${this.classificationHost}</computerName>
+    <guid>${this.classificationGUID}</guid>
+    <hdr>
+        ${hdrBlocks}
+    </hdr>
+    <ftr>
+        ${ftrBlocks}
+    </ftr>
+    <wm>
+        <fontName>${wmObj.fontName}</fontName>
+        <fontColor>${wmObj.fontColor}</fontColor>
+        <fontSize>${wmObj.fontSize}</fontSize>
+        <b/>
+        <rotation>${wmObj.rotation}</rotation>
+        <transparency>${wmObj.transparency}</transparency>
+        <text xml:space="preserve">${wmObj.text}</text>
+    </wm>
+</GTBClassification>`;
     }
 
     static deleteFromCustomProperties(aName, customProps)

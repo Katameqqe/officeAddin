@@ -12,9 +12,9 @@ class CustomXmlParts
         this.items.push(new CustomXmlPart(anXml));
     }
 
-    async load()
+    async load(context, option)
     {
-
+        return this.items;
     }
 
     async sync()
@@ -29,6 +29,10 @@ class CustomXmlParts
             }
         }
         this.items = newItems;
+    }
+    getItem(aId)
+    {
+        return this.items.find(item => item.id === aId);
     }
 }
 module.exports = CustomXmlParts;

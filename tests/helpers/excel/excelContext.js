@@ -9,5 +9,10 @@ class ExcelContext
     {
         this.workbook.sync();
     }
+
+    async load(option)
+    {
+        await this.workbook.load(this, option);
+    }
 }
 module.exports = ExcelContext;

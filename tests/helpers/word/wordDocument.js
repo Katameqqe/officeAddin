@@ -16,5 +16,11 @@ class WordDocument
         this.customXmlParts.sync();
         this.properties.customProperties.sync();
     }
+
+    async load(context, option)
+    {
+        await this.customXmlParts.load(context, "items");
+        await this.properties.customProperties.load();
+    }
 }
 module.exports = WordDocument;

@@ -11,6 +11,8 @@ global.fetch =                      require('./helpers/fetch');
 const taskpane =                    require('../src/index');
 
 global.ExcelCustomPropertyController = require('../src/ExcelCustomPropertyController');
+global.CustomXMLController =    require('../src/CustomXMLController');
+global.CustomXMLProcessor =    require('../src/CustomXMLProcessor');
 
 const Document =                    require('./helpers/document');
 const ExcelWorkbook =               require('./helpers/excel/excelWorkbook');

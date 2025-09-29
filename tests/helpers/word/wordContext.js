@@ -9,5 +9,10 @@ class WordContext
     {
         this.document.sync();
     }
+
+    async load(option)
+    {
+        await this.document.load(this, option);
+    }
 }
 module.exports = WordContext;

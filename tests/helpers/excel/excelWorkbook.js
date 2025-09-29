@@ -16,5 +16,11 @@ class ExcelDocument
         this.customXmlParts.sync();
         this.properties.custom.sync();
     }
+
+    async load(context, option)
+    {
+        await this.customXmlParts.load(context, "items");
+        await this.properties.custom.load();
+    }
 }
 module.exports = ExcelDocument;

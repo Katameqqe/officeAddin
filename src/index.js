@@ -33,7 +33,7 @@ async function init(info)
     {
         return;
     }
-
+ 
     propertyController = new CustomPropertyController(info.host);
     XMLController = new CustomXMLController(info.host);
 
@@ -43,6 +43,7 @@ async function init(info)
 
     // We better get classification from document before. And then "createButtons" with selected classification
     const classification = await propertyController.readCustomProperty(MetaPrefix);
+    const classificationFonts = await XMLController.readCustomProperty(MetaPrefix);
     console.log(`Read custom property "${MetaPrefix}": ${JSON.stringify(classification, null, 2)}`);
 
     createButtons(ListSuffix, classification);
