@@ -4,6 +4,8 @@ class CustomXmlPart
     {
         this.id = "customXmlPartId"
         this.xml = anXml;
+        this.context = {};
+        this.context.sync = async () => {};
     }
 
     getXml()

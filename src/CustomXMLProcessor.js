@@ -32,7 +32,6 @@ class CustomXMLProcessor
         const xmlParts = context[this.documentType].customXmlParts;
         context.load(xmlParts, "items");
         await context.sync();
-        console.log(xmlParts.items[3].getXml());
         const result = await CustomClassification.readByNameFromCustomXmlParts(aName, xmlParts)
         if (result == null)
         {
