@@ -2,13 +2,18 @@ class CustomPropertyController
 {
     constructor(aHost)
     {
+        this.PropertyController = new CustomPropertyProcessor();
         if (aHost === Office.HostType.Word)
         {
-            this.propertyController = new WordCustomPropertyController();
+            this.PropertyController.documentType = "document";
+            this.PropertyController.propertyName = "customProperties";
+            this.platform = Word;
         }
         else if (aHost === Office.HostType.Excel)
         {
-            this.propertyController = new ExcelCustomPropertyController();
+            this.PropertyController.documentType = "workbook";
+            this.PropertyController.propertyName = "custom";
+            this.platform = Excel;
         }
         else if (aHost === Office.HostType.PowerPoint)
         {
@@ -23,17 +28,17 @@ class CustomPropertyController
 
     async addCustomProperty(ClassificationObj)
     {
-        return this.propertyController.addCustomProperty(ClassificationObj);
+        return this.platform.run(async (context) => {this.PropertyController.addCustomProperty(context, ClassificationObj)});
     }
 
     async readCustomProperty(name)
     {
-        return this.propertyController.readCustomProperty(name);
+        return this.platform.run(async (context) => {this.PropertyController.readCustomProperty(context, name)});
     }
 
     async removeCustomProperty(value)
     {
-        return this.propertyController.removeCustomProperty(value);
+        return this.platform.run(async (context) => {this.PropertyController.removeCustomProperty(context, value)});
     };
 }
 

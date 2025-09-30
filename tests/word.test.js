@@ -1,30 +1,32 @@
 
-global.Office =                     require('./helpers/office');
+global.Office =                             require('./helpers/office');
 
-const Window =                      require('./helpers/window');
+const Window =                              require('./helpers/window');
 
-global.CustomPropertyController =   require('../src/CustomPropertyController');
-global.CustomClassification =       require('../src/customClassification');
+global.CustomPropertyController =           require('../src/CustomPropertyController');
+global.CustomClassification =               require('../src/customClassification');
 
-global.fetch =                      require('./helpers/fetch');
+global.fetch =                              require('./helpers/fetch');
 
-const taskpane =                    require('../src/index');
+const taskpane =                            require('../src/index');
 
-global.WordCustomPropertyController = require('../src/WordCustomPropertyController');
-global.CustomXMLController =    require('../src/CustomXMLController');
-global.CustomXMLProcessor =    require('../src/CustomXMLProcessor');
+//global.WordCustomPropertyController =       require('../src/WordCustomPropertyController');
+global.CustomXMLController =                require('../src/CustomXMLController');
+global.CustomXMLProcessor =                 require('../src/CustomXMLProcessor');
+global.CustomPropertyProcessor =            require('../src/CustomPropertyProcessor');
 
-const Document =                    require('./helpers/document');
-const WordDocument =                require('./helpers/word/wordDocument');
-const CustomProperty =              require('./helpers/customProperty');
-const CustomXmlPart =               require('./helpers/customXmlPart');
+const Document =                            require('./helpers/document');
+const WordDocument =                        require('./helpers/word/wordDocument');
+const CustomProperty =                      require('./helpers/customProperty');
+const CustomXmlPart =                       require('./helpers/customXmlPart');
 
-global.Word =                       require('./helpers/word/word');
-const { DOMParser } = require('xmldom');
+
+global.Word =                               require('./helpers/word/word');
+const { DOMParser } =                       require('xmldom');
 
 const info = {host: Office.HostType.Word, };
 
-const testXMLpart_one = require('./helpers/exampleXML');
+const testXMLpart_one =                     require('./helpers/exampleXML');
 
 // TODO: implement tests
 

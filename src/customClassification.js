@@ -39,6 +39,9 @@ class CustomClassification
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(xml.value, "application/xml");
 
+            const root = xmlDoc.documentElement;
+            if (!root || root.nodeName !== "GTBClassification") continue;
+
             const propName = xmlDoc.getElementsByTagName("customPropName")[0]?.textContent;
             if (propName === aName) {
                 return {

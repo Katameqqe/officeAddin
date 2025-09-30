@@ -1,24 +1,26 @@
 
-global.Office =                     require('./helpers/office');
+global.Office =                             require('./helpers/office');
 
-const Window =                      require('./helpers/window');
+const Window =                              require('./helpers/window');
 
-global.CustomPropertyController =   require('../src/CustomPropertyController');
-global.CustomClassification =       require('../src/customClassification');
+global.CustomPropertyController =           require('../src/CustomPropertyController');
+global.CustomClassification =               require('../src/customClassification');
 
-global.fetch =                      require('./helpers/fetch');
+global.fetch =                              require('./helpers/fetch');
 
-const taskpane =                    require('../src/index');
+const taskpane =                            require('../src/index');
 
-global.ExcelCustomPropertyController = require('../src/ExcelCustomPropertyController');
-global.CustomXMLController =    require('../src/CustomXMLController');
-global.CustomXMLProcessor =    require('../src/CustomXMLProcessor');
+//global.ExcelCustomPropertyController =      require('../src/ExcelCustomPropertyController');
+global.CustomXMLController =                require('../src/CustomXMLController');
+global.CustomXMLProcessor =                 require('../src/CustomXMLProcessor');
+global.CustomPropertyProcessor =            require('../src/CustomPropertyProcessor');
 
-const Document =                    require('./helpers/document');
-const ExcelWorkbook =               require('./helpers/excel/excelWorkbook');
-const CustomProperty =              require('./helpers/customProperty');
+const Document =                            require('./helpers/document');
+const ExcelWorkbook =                       require('./helpers/excel/excelWorkbook');
+const CustomProperty =                      require('./helpers/customProperty');
 
-global.Excel =                      require('./helpers/excel/excel');
+global.Excel =                              require('./helpers/excel/excel');
+
 const info = {host: Office.HostType.Excel, };
 
 beforeEach(
