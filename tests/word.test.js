@@ -9,8 +9,8 @@ global.CustomClassification =               require('../src/customClassification
 global.fetch =                              require('./helpers/fetch');
 
 const taskpane =                            require('../src/index');
+global.defaultClassificationFont =          require('../src/defaultVars');
 
-//global.WordCustomPropertyController =       require('../src/WordCustomPropertyController');
 global.CustomXMLController =                require('../src/CustomXMLController');
 global.CustomXMLProcessor =                 require('../src/CustomXMLProcessor');
 global.CustomPropertyProcessor =            require('../src/CustomPropertyProcessor');
@@ -112,11 +112,17 @@ test('Word update existed classification',
         await expect(document.getElementById("classificationGroup").children.length).toBe(5);
         await expect(global.Word.context.document.properties.customProperties.items.length).toBe(5);
         await expect(global.Word.context.document.properties.customProperties.items[0].value).toBe("Default");
+        await expect(global.Word.context.document.customXmlParts.items.length).toBe(1);
+        await expect(global.Word.context.document.customXmlParts.items[0].getXml().value).toBe(testXMLpart_one);
 
         await taskpane.classificationSelected("Restricted");
 
         await expect(global.Word.context.document.properties.customProperties.items.length).toBe(5);
         await expect(global.Word.context.document.properties.customProperties.items[0].value).toBe("Restricted");
+        await expect(global.Word.context.document.customXmlParts.items.length).toBe(1);
+        
+        const xml = global.Word.context.document.customXmlParts.items[0].getXml().value;
+        await expect(xml.includes(`<attrValue xml:space="preserve">Restricted</attrValue>`)).toBe(true);
     });
 
 test('Word clear classification',
@@ -130,12 +136,19 @@ test('Word clear classification',
             new CustomProperty("ClassificationDate", "Date"),
             new CustomProperty("ClassificationGUID", "GUID"),
         ];
+        global.Word.context.document.customXmlParts.items =
+        [
+            new CustomXmlPart(testXMLpart_one),
+        ];
+
         await taskpane.init(info);
         await expect(document.getElementById("classificationGroup").children.length).toBe(5);
         await expect(global.Word.context.document.properties.customProperties.items.length).toBe(5);
         await expect(global.Word.context.document.properties.customProperties.items[0].value).toBe("Default");
+        await expect(global.Word.context.document.customXmlParts.items.length).toBe(1);
 
         await taskpane.removeClassification();
 
         await expect(global.Word.context.document.properties.customProperties.items.length).toBe(0);
+        await expect(global.Word.context.document.customXmlParts.items.length).toBe(0);
     });

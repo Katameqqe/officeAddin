@@ -28,3 +28,5 @@ const defaultClassificationFont =
         "text": "Confidential",
     },
 };
+
+module.exports = defaultClassificationFont;
