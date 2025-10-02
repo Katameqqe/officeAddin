@@ -4,7 +4,7 @@ const HostName = "GTB.test.com";
 const userName = "USERRR";
 const GUID = "{123e4567-e89b-12d3-a456-426614174000}";
 
-let classifLabels = null
+let ClassificationFonts = {};
 let propertyController = null;
 let XMLController = null;
 
@@ -37,8 +37,8 @@ async function init(info)
     propertyController = new CustomPropertyController(info.host);
     XMLController = new CustomXMLController(info.host);
 
-    const ListSuffix = await getLabels();
-    classifLabels = await getClassifLabels();
+    const ClassificationLabels = await getClassifcationLabels();
+    ClassificationFonts = await getClassificationFonts();
 
 
     // We better get classification from document before. And then "createButtons" with selected classification
@@ -46,13 +46,13 @@ async function init(info)
     const classificationFonts = await XMLController.readCustomProperty(MetaPrefix);
     console.log(`Read custom property "${MetaPrefix}": ${JSON.stringify(classification, null, 2)}`);
 
-    createButtons(ListSuffix, classification);
+    createButtons(ClassificationLabels, classification);
 };
 
-function createButtons(ListSuffix, aSelectedClassification)
+function createButtons(ClassificationLabels, aSelectedClassification)
 {
     const clearSelected = aSelectedClassification == null;
-    for (const suffix of ListSuffix)
+    for (const suffix of ClassificationLabels)
     {
         let isSelected = false;
         if (!clearSelected)
@@ -66,7 +66,7 @@ function createButtons(ListSuffix, aSelectedClassification)
     document.getElementById("classificationGroup").appendChild(resetNode);
 }
 
-async function getLabels()
+async function getClassifcationLabels()
 {
     const List = await fetch(`${address}/api/v1/classification-labels`)
         .then(res => res.json())
@@ -74,7 +74,7 @@ async function getLabels()
         .catch(
             err =>
             {
-                console.error("Error fetching suffix list:", err);
+                console.error("Error fetching classification labels list:", err);
                 return ["Document", "Default", "Restricted", "Protected",];
             });
 
@@ -82,7 +82,7 @@ async function getLabels()
     return List;
 }
 
-async function getClassifLabels()
+async function getClassificationFonts()
 {
     const List = await fetch(`${address}/api/v1/xml-fonts`)
         .then(res => res.json())
@@ -92,11 +92,7 @@ async function getClassifLabels()
             {
                 // TODO: function name get classification labels, but in log "suffix".
                 // What do we get or fetch? suffixes?
-                console.error("Error fetching suffix list:", err);
-
-                // TODO: It is bad practice to return such long something.
-                // Move it to object, give it a name. What is it? Do we really need it?
-                // If you have something default such long - move it to separate file.
+                console.error("Error fetching classification fonts:", err);
                 return defaultClassificationFont;
             });
 
@@ -153,8 +149,8 @@ function clearClassificationItem(itemIsChecked)
 
 async function classificationSelected(aClassificationValue)
 {
-    let classificationObject = new CustomClassification(MetaPrefix, aClassificationValue, userName, HostName,new Date().toLocaleString(),GUID);
-    XMLController.addCustomProperty(classificationObject, classifLabels);
+    let classificationObject = new CustomClassification(MetaPrefix, aClassificationValue, userName, HostName,new Date().toLocaleString(),GUID, ClassificationFonts);
+    XMLController.addCustomProperty(classificationObject);
     propertyController.addCustomProperty(classificationObject);
 }
 

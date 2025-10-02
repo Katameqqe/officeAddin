@@ -68,7 +68,7 @@ class CustomClassification
         customProperties.add("ClassificationGUID", this.classificationGUID);
     }
 
-    toXmlString(hdrArr, ftrArr, wmObj)
+    toXmlString()
     {
         function createR(fontName, fontColor, fontSize, text)
         {
@@ -84,10 +84,10 @@ class CustomClassification
             return str.replace(/^/gm, '        ');
         }
 
-        const hdrBlocks = hdrArr.map(obj =>
+        const hdrBlocks = this.classificationFont.hdr.map(obj =>
             createR(obj.fontName, obj.fontColor, obj.fontSize, obj.text)
         ).join('\n');
-        const ftrBlocks = ftrArr.map(obj =>
+        const ftrBlocks = this.classificationFont.ftr.map(obj =>
             createR(obj.fontName, obj.fontColor, obj.fontSize, obj.text)
         ).join('\n');
         return `<GTBClassification>
@@ -102,13 +102,13 @@ class CustomClassification
     <ftr>${`\n` + addTwoTabsToEachLine(ftrBlocks)}
     </ftr>
     <wm>
-        <fontName>${wmObj.fontName}</fontName>
-        <fontColor>${wmObj.fontColor}</fontColor>
-        <fontSize>${wmObj.fontSize}</fontSize>
+        <fontName>${this.classificationFont.wm.fontName}</fontName>
+        <fontColor>${this.classificationFont.wm.fontColor}</fontColor>
+        <fontSize>${this.classificationFont.wm.fontSize}</fontSize>
         <b/>
-        <rotation>${wmObj.rotation}</rotation>
-        <transparency>${wmObj.transparency}</transparency>
-        <text xml:space="preserve">${wmObj.text}</text>
+        <rotation>${this.classificationFont.wm.rotation}</rotation>
+        <transparency>${this.classificationFont.wm.transparency}</transparency>
+        <text xml:space="preserve">${this.classificationFont.wm.text}</text>
     </wm>
 </GTBClassification>`;
     }
@@ -133,7 +133,7 @@ class CustomClassification
         }
     }
 
-    constructor(aName, aValue, aUserName, aHostName, aDate = new Date().toLocaleString(), aGUID)
+    constructor(aName, aValue, aUserName, aHostName, aDate = new Date().toLocaleString(), aGUID, aClassificationFont)
     {
         this.name = aName;
         this.value = aValue;
@@ -141,6 +141,7 @@ class CustomClassification
         this.classificationHost = aHostName;
         this.classificationDate = aDate;
         this.classificationGUID = aGUID;
+        this.classificationFont = aClassificationFont;
     }
 }
 module.exports = CustomClassification;
