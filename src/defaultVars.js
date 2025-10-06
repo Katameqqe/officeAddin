@@ -29,4 +29,13 @@ const defaultClassificationFont =
     },
 };
 
-module.exports = defaultClassificationFont;
+const defaultClassificationLabel =
+[
+    "Document",
+    "Default",
+    "Restricted",
+    "Protected"
+];
+
+module.exports.defaultClassificationFont = defaultClassificationFont;
+module.exports.defaultClassificationLabel = defaultClassificationLabel;

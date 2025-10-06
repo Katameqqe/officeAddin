@@ -39,6 +39,8 @@ async function init(info)
 
     reqCtrl = new RequestController();
 
+    console.log(`RequestController address: ${JSON.stringify(await reqCtrl.getClassifcationLabels())}`);
+
     const ClassificationLabels = await reqCtrl.getClassifcationLabels();
     ClassificationFonts = await reqCtrl.getClassificationFonts();
 

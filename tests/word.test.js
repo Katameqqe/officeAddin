@@ -9,7 +9,8 @@ global.CustomClassification =               require('../src/customClassification
 global.fetch =                              require('./helpers/fetch');
 
 const taskpane =                            require('../src/index');
-global.defaultClassificationFont =          require('../src/defaultVars');
+global.defaultClassificationFont =          require('../src/defaultVars').defaultClassificationFont;
+global.defaultClassificationLabel =         require('../src/defaultVars').defaultClassificationLabel;
 
 global.CustomXMLController =                require('../src/CustomXMLController');
 global.CustomXMLProcessor =                 require('../src/CustomXMLProcessor');
@@ -21,7 +22,6 @@ const WordDocument =                        require('./helpers/word/wordDocument
 const CustomProperty =                      require('./helpers/customProperty');
 const CustomXmlPart =                       require('./helpers/customXmlPart');
 
-
 global.Word =                               require('./helpers/word/word');
 const { DOMParser } =                       require('xmldom');
 
@@ -29,7 +29,6 @@ const info = {host: Office.HostType.Word, };
 
 const testXMLpart_one =                     require('./helpers/exampleXML');
 
-// TODO: implement tests
 
 beforeEach(
     () =>

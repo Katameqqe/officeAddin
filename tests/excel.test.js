@@ -9,7 +9,8 @@ global.CustomClassification =               require('../src/customClassification
 global.fetch =                              require('./helpers/fetch');
 
 const taskpane =                            require('../src/index');
-global.defaultClassificationFont =          require('../src/defaultVars');
+global.defaultClassificationFont =          require('../src/defaultVars').defaultClassificationFont;
+global.defaultClassificationLabel =         require('../src/defaultVars').defaultClassificationLabel;
 
 global.CustomXMLController =                require('../src/CustomXMLController');
 global.CustomXMLProcessor =                 require('../src/CustomXMLProcessor');

@@ -2,7 +2,7 @@ class result
 {
     static json()
     {
-        return {names: ["Document", "Default", "Restricted", "Protected",],};
+        return {names: defaultClassificationLabel};
     }
 
 }

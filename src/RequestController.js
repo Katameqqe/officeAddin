@@ -15,7 +15,7 @@ class RequestController
                 err =>
                 {
                     console.error("Error fetching classification labels list:", err);
-                    return ["Document", "Default", "Restricted", "Protected",];
+                    return defaultClassificationLabel;
                 });
 
         console.log(JSON.stringify(List,null,2));
