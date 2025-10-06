@@ -14,6 +14,7 @@ global.defaultClassificationFont =          require('../src/defaultVars');
 global.CustomXMLController =                require('../src/CustomXMLController');
 global.CustomXMLProcessor =                 require('../src/CustomXMLProcessor');
 global.CustomPropertyProcessor =            require('../src/CustomPropertyProcessor');
+global.RequestController =                  require('../src/RequestController');
 
 const Document =                            require('./helpers/document');
 const ExcelWorkbook =                       require('./helpers/excel/excelWorkbook');

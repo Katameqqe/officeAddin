@@ -4,7 +4,7 @@ const HostName = "GTB.test.com";
 const userName = "USERRR";
 const GUID = "{123e4567-e89b-12d3-a456-426614174000}";
 
-let ClassificationFonts = {};
+let ClassificationFonts = null;
 let propertyController = null;
 let XMLController = null;
 
@@ -37,8 +37,10 @@ async function init(info)
     propertyController = new CustomPropertyController(info.host);
     XMLController = new CustomXMLController(info.host);
 
-    const ClassificationLabels = await getClassifcationLabels();
-    ClassificationFonts = await getClassificationFonts();
+    reqCtrl = new RequestController();
+
+    const ClassificationLabels = await reqCtrl.getClassifcationLabels();
+    ClassificationFonts = await reqCtrl.getClassificationFonts();
 
 
     // We better get classification from document before. And then "createButtons" with selected classification
@@ -64,40 +66,6 @@ function createButtons(ClassificationLabels, aSelectedClassification)
     }
     const resetNode = clearClassificationItem(clearSelected);
     document.getElementById("classificationGroup").appendChild(resetNode);
-}
-
-async function getClassifcationLabels()
-{
-    const List = await fetch(`${address}/api/v1/classification-labels`)
-        .then(res => res.json())
-        .then(resJson => resJson.names)
-        .catch(
-            err =>
-            {
-                console.error("Error fetching classification labels list:", err);
-                return ["Document", "Default", "Restricted", "Protected",];
-            });
-
-    console.log(JSON.stringify(List,null,2));
-    return List;
-}
-
-async function getClassificationFonts()
-{
-    const List = await fetch(`${address}/api/v1/xml-fonts`)
-        .then(res => res.json())
-        .then(resJson => resJson)
-        .catch(
-            err =>
-            {
-                // TODO: function name get classification labels, but in log "suffix".
-                // What do we get or fetch? suffixes?
-                console.error("Error fetching classification fonts:", err);
-                return defaultClassificationFont;
-            });
-
-    console.log(JSON.stringify(List,null,2));
-    return List;
 }
 
 function generateClassificationItem(itemText, itemIsChecked)
